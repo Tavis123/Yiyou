@@ -1,0 +1,66 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    contact_info VARCHAR(255)
+);
+
+CREATE TABLE game_accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    game_name VARCHAR(255) NOT NULL,
+    account_level INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyer_id INT NOT NULL,
+    seller_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    transaction_time DATETIME NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    payment_method VARCHAR(255) NOT NULL,
+    FOREIGN KEY (buyer_id) REFERENCES users(id),
+    FOREIGN KEY (seller_id) REFERENCES users(id)
+);
+
+CREATE TABLE chat_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message TEXT NOT NULL,
+    send_time DATETIME NOT NULL,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
+);
+
+CREATE TABLE blacklist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reason TEXT NOT NULL,
+    blacklisted_time DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE audit_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    audited_object VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    audit_time DATETIME NOT NULL
+);
+
+CREATE TABLE personal_center (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    nickname VARCHAR(255) NOT NULL,
+    avatar VARCHAR(255),
+    signature TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE accident_handling (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accident_type VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    handling_time DATETIME NOT NULL
+);
