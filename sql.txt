@@ -1,0 +1,78 @@
+-- users表：存储用户信息，包括用户id、用户名、密码、信息内容
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    contact_info VARCHAR(255)
+);
+
+-- game_accounts表：存储游戏账号信息，包括用户ID、游戏名称、账号等级、价格和状态。通过外键与users表建立关联，实现用户与游戏账号的关系。
+CREATE TABLE game_accounts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    game_name VARCHAR(255) NOT NULL,
+    account_level INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(10) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- transactions表：记录交易信息，包括买家ID、卖家ID、游戏账号ID、交易金额、交易时间和状态。通过外键与users表和game_accounts表建立关联，实现交易与用户、游戏账号的关系。
+CREATE TABLE transactions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    buyer_id INT NOT NULL,
+    seller_id INT NOT NULL,
+    game_account_id INT NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    transaction_time DATETIME NOT NULL,
+    status VARCHAR(10) NOT NULL,
+    FOREIGN KEY (buyer_id) REFERENCES users(id),
+    FOREIGN KEY (seller_id) REFERENCES users(id),
+    FOREIGN KEY (game_account_id) REFERENCES game_accounts(id)
+);
+
+-- chat_records表：保存聊天记录，包括发送者ID、接收者ID、消息内容和发送时间。通过外键与users表建立关联，实现聊天记录与用户的关系。
+CREATE TABLE chat_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    message TEXT NOT NULL,
+    send_time DATETIME NOT NULL,
+    FOREIGN KEY (sender_id) REFERENCES users(id),
+    FOREIGN KEY (receiver_id) REFERENCES users(id)
+);
+
+-- blacklist表：存储黑名单信息，包括用户ID、加入黑名单的原因和加入时间。通过外键与users表建立关联，实现黑名单与用户的关系。
+CREATE TABLE blacklist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reason TEXT NOT NULL,
+    blacklisted_time DATETIME NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- audit_records表：记录审核记录，包括被审核对象、审核结果和审核时间。该表可以用于存储商品审核、用户举报审核等相关信息。
+CREATE TABLE audit_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    audited_object VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    audit_time DATETIME NOT NULL
+);
+
+-- personal_center表：保存个人中心信息，包括用户ID、昵称、头像和个性签名等。通过外键与users表建立关联，实现个人中心与用户的关系。
+CREATE TABLE personal_center (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    nickname VARCHAR(255) NOT NULL,
+    avatar VARCHAR(255),
+    signature TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- accident_handling表：记录事故处理信息，包括事故类型、处理结果和处理时间。该表可用于记录交易过程中出现的问题和相关处理。
+CREATE TABLE accident_handling (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accident_type VARCHAR(255) NOT NULL,
+    result VARCHAR(255) NOT NULL,
+    handling_time DATETIME NOT NULL
+);
