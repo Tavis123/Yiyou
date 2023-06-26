@@ -1,13 +1,30 @@
 package com.work;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.work.entity.User;
+import com.work.mapper.UserMapper;
+import org.junit.jupiter.api.Test;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootApplication
+import java.util.List;
+
+@SpringBootTest
+@MapperScan("com.work.mapper")
 public class YiYouApplicationTests {
+    @Autowired
+    private UserMapper userMapper;
 
-    public static void main(String[] args) {
-        SpringApplication.run(YiYouApplication.class, args);
+    @Test
+    public static void testSelect() {
+        System.out.println(("----- selectAll method test ------"));
+        List<User> userList = userMapper.selectList(null);
+        Assert.assertEquals(5, userList.size());
+        userList.forEach(System.out::println);
     }
 
+    public static void main(String[] args) {
+        testSelect();
+    }
 }

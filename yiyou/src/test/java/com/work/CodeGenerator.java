@@ -12,7 +12,7 @@ public class CodeGenerator {
         String url = "jdbc:mysql:///yiyou";
         String username = "root";
         String password = "123456";
-        String moduleName = "sys";//模块名
+        String moduleName = "system";//模块名
         String tables = "accident_handling,audit_records,blacklist,chat_records,game_accounts,personal_center,transactions,users";
 
         String mapperLocation = "C:\\Users\\86183\\Desktop\\yi-you\\yiyou\\src\\main\\resources\\mapper\\" + moduleName;
