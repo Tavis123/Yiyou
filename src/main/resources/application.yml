@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/yiyou
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jndi-name: java:comp/env/jdbc/yiyou
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+logging:
+  level:
+    com.work: debug
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
