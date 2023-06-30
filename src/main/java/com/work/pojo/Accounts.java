@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
+@Data//сно╥ук╨е╠М
 @TableName("game_accounts")
 public class Accounts implements Serializable {
     private static final long serialVersionUID = 1L;

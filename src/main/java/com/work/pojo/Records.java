@@ -8,7 +8,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Data//ÉóºË¼ÇÂ¼±í
 @TableName("audit_records")
 public class Records implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -7,15 +7,19 @@ import jakarta.servlet.http.HttpSession;
 
 public interface IUserService extends IService<User> {
     //登录
-    Result<User> login(User user);
+    Result login(String username, String password);
 
     //注册
-    Result<User> register(User user);
+    Result register(String username, String password);
 
     //更新用户
-    Result<User> update(User user) throws Exception;
+    Result update(User user) throws Exception;
 
-    //判断用户是否登录（实际上就是从session取出用户id去数据库查询并比对）
-    Result<User> isLogin(HttpSession session);
+//    //判断用户是否登录（实际上就是从session取出用户id去数据库查询并比对）
+//    Result isLogin(HttpSession session);
 
+    Result updatePassword(User user);
+
+    //忘记密码
+    Result forgetPassword(String phone);
 }

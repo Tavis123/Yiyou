@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Data//ºÚÃûµ¥±í
 public class Blacklist implements Serializable {
     private static final long serialVersionUID = 1L;
 

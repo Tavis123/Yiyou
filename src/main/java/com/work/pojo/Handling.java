@@ -8,12 +8,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
+@Data//事故处理表
 @TableName("accident_handling")
 public class Handling implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     private String accidentType;

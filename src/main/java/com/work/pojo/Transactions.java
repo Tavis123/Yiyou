@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Data//交易信息表
 public class Transactions implements Serializable {
     private static final long serialVersionUID = 1L;
 

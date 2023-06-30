@@ -9,7 +9,7 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Data//用户表
 @JsonIgnoreProperties(value = {"password"}, allowSetters = true)//返回json时忽略password属性
 public class User implements Serializable {
 

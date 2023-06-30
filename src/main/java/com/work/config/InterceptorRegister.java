@@ -9,10 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author wq
- * @desc 注册拦截器
- */
 @Configuration
 public class InterceptorRegister implements WebMvcConfigurer {
     @Bean
