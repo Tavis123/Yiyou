@@ -1,6 +1,6 @@
 package com.work.service;
 
-import com.work.pojo.Accounts;
+import com.work.pojo.Blacklist;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author wuqi
  * @since 2023-05-13
  */
-public interface IAccountsService extends IService<Accounts> {
+public interface BlacklistService extends IService<Blacklist> {
 
 }

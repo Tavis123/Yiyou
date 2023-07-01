@@ -1,6 +1,6 @@
 package com.work.service;
 
-import com.work.pojo.Center;
+import com.work.pojo.Handling;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author wuqi
  * @since 2023-05-13
  */
-public interface ICenterService extends IService<Center> {
+public interface HandlingService extends IService<Handling> {
 
 }

@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author wuqi
  * @since 2023-05-13
  */
-public interface IRecordsService extends IService<Records> {
+public interface RecordsService extends IService<Records> {
 
 }

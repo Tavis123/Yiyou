@@ -2,7 +2,7 @@ package com.work.service.impl;
 
 import com.work.pojo.Accounts;
 import com.work.mapper.AccountsMapper;
-import com.work.service.IAccountsService;
+import com.work.service.AccountsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-05-13
  */
 @Service
-public class AccountsServiceImpl extends ServiceImpl<AccountsMapper, Accounts> implements IAccountsService {
+public class AccountsServiceImpl extends ServiceImpl<AccountsMapper, Accounts> implements AccountsService {
 
 }

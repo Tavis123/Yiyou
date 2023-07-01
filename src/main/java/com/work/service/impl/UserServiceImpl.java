@@ -1,30 +1,19 @@
 package com.work.service.impl;
 
 import com.work.common.Constants;
-import com.work.controller.UserController;
 import com.work.pojo.User;
 import com.work.mapper.UserMapper;
-import com.work.service.IUserService;
+import com.work.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.work.utils.ClassExamine;
 import com.work.common.Result;
 import com.work.utils.TokenUtil;
-import jakarta.servlet.http.HttpSession;
+import com.work.utils.updateObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 
-/**
- * <p>
- * 服务实现类
- * </p>
- *
- * @author wuqi
- * @since 2023-05-13
- */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     private UserMapper userMapper;
 
@@ -43,8 +32,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         //设置token
         String token = TokenUtil.getToken(username, password);
         getUser.setToken(token);
-        //设定登录成功消息
-        return Result.success("200", "登录成功!", getUser);
+        //设定登录成功消息并返回token
+        return Result.success("200", "登录成功!", token);
     }
 
     @Override
@@ -63,63 +52,90 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userMapper.insert(getUser);
             return Result.success("注册成功!");
         }
-
     }
 
+    //登出
     @Override
-    //更新用户
-    public Result update(User user) throws Exception {
-        Result result = new Result<>();
-        //去数据库查找用户
-        User getUser = userMapper.selectById(user.getId());
+    public Result logout(String token, String username) {
+        //根据用户名去数据库查找用户
+        User getUser = userMapper.selectById(username);
         if (getUser == null) {
-            result.setResultFailed("用户不存在!");
-            return result;
+            return Result.error(Constants.ERROR_400, "不存在该用户!");
         }
-        //检测传来的对象里面字段值是否为空，若是就用数据库里面的对象相应字段值补上
-        if (!StringUtils.hasText(user.getPassword())) {
-            //加密储存
-            user.setPassword(DigestUtils.md5DigestAsHex(getUser.getPassword().getBytes()));
+        //对比token
+        if (!getUser.getToken().equals(token)) {
+            return Result.error(Constants.ERROR_400, "参数错误!");
         }
-        //对象互补
-        ClassExamine.objectOverlap(getUser, user);
+        //清除token
+        getUser.setToken(null);
         //存入数据库
-        userMapper.update(user, null);
-        result.setResultSuccess("修改用户成功!", user);
-        return result;
+        userMapper.updateById(getUser);
+        return Result.success("登出成功!");
     }
 
 //    @Override
-//    public Result<User> isLogin(HttpSession session) {
-//        Result<User> result = new Result<>();
-//        //从session取出信息
-//        User sessionUser = (User) session.getAttribute(UserController.SESSION_NAME);
-//        //若session里面没有用户信息，说明用户未登录
-//        if (sessionUser == null) {
-//            result.setResultFailed("用户未登录!");
+//    //更新用户
+//    public Result update(User user) throws Exception {
+//        Result result = new Result<>();
+//        //去数据库查找用户
+//        User getUser = userMapper.selectById(user.getId());
+//        if (getUser == null) {
+//            result.setResultFailed("用户不存在!");
 //            return result;
 //        }
-//        //登录了则去数据库取出信息进行比对
-//        User getUser = userMapper.selectById(sessionUser.getId());
-//        if (getUser == null || !getUser.getPassword().equals(sessionUser.getPassword())) {
-//            result.setResultFailed("用户信息无效!");
-//            return result;
+//        //检测传来的对象里面字段值是否为空，若是就用数据库里面的对象相应字段值补上
+//        if (!StringUtils.hasText(user.getPassword())) {
+//            //加密储存
+//            user.setPassword(DigestUtils.md5DigestAsHex(getUser.getPassword().getBytes()));
 //        }
-//        result.setResultSuccess("用户已登录!", getUser);
+//        //对象互补
+//        ClassExamine.objectOverlap(getUser, user);
+//        //存入数据库
+//        userMapper.update(user, null);
+//        result.setResultSuccess("修改用户成功!", user);
 //        return result;
 //    }
 
-    @Override//未实现好
-    public Result updatePassword(User user) {
-        Result result = new Result<>();
+    //重置密码
+    @Override
+    public Result updatePassword(String newPassword, String username) {
+        Result result = new Result();
+        //去数据库查找用户
+        User user = userMapper.selectById(username);
         //修改该用户的密码
-        user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
-        return result;
+        user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+        return Result.success(Constants.SUCCESS, "修改密码成功!");
     }
 
-    //忘记密码
+    //更换头像
     @Override
-    public Result forgetPassword(String phone) {
+    public Result updateAvatar(String url, String username) {
+        //去数据库查找用户
+        User user = userMapper.selectById(username);
+        //修改该用户的头像
+        user.setAvatar(url);
+        return Result.success(Constants.SUCCESS, "修改头像成功!");
+    }
 
+    //获取用户信息
+    @Override
+    public Result getInfo(String username) {
+        //去数据库查找用户
+        User user = userMapper.selectById(username);
+        return Result.success(Constants.SUCCESS, "获取用户信息成功!", user);
+    }
+
+    //修改用户信息
+    @Override
+    public Result updateInfo(User user) {
+        //去数据库查找用户
+        User getUser = userMapper.selectById(user.getUsername());
+        //修改该用户的信息
+        try {
+            updateObject.objectOverlap(getUser, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success(Constants.SUCCESS, "修改用户信息成功!");
     }
 }

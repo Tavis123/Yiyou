@@ -29,7 +29,13 @@ public class User implements Serializable {
 
     private String phone;
 
-    //以下为非数据库字段
     private String token;
 
+    private String avatar;
+
+    private String signature;
+
+    private String email;
+
+    private String nickname;
 }
