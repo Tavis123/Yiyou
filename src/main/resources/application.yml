@@ -19,3 +19,9 @@ logging:
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
+
+identify:
+  url: https://idcert.market.alicloudapi.com/idcard?idCard=%s&name=%s
+  appKey: 204262225
+  appSecret: GhmbQgVwjKWpErVJj0Lenz6qQymuxNgV
+  appCode: ba6bb17924cd48a1ae6054bebfa5ae6b

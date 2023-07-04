@@ -47,13 +47,6 @@ public class UserController {
         return result;
     }
 
-
-//    //编辑用户信息
-//    @PutMapping("/update")
-//    public Result updateUser(@RequestBody User user) throws Exception {
-//        return null;
-//    }
-
     //用户登出
     @GetMapping("/logout")
     public Result<Void> logout(@RequestParam String token, @RequestParam String username) {
@@ -65,6 +58,13 @@ public class UserController {
     @PutMapping("/updatepassword")
     public Result updatePassword(@RequestParam String newPassword, @RequestParam String username) {
         Result result = userService.updatePassword(newPassword, username);
+        return result;
+    }
+
+    //实名认证
+    @GetMapping("/identify")
+    public Result identify(@RequestParam String realname, @RequestParam String idnumber) {
+        Result result = userService.identify(realname, idnumber);
         return result;
     }
 

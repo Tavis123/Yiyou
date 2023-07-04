@@ -28,4 +28,7 @@ public interface UserService extends IService<User> {
 
     //修改用户信息
     Result updateInfo(User user);
+
+    //实名认证
+    Result identify(String realname, String idcard);
 }

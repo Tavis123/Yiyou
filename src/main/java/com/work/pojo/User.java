@@ -38,4 +38,8 @@ public class User implements Serializable {
     private String email;
 
     private String nickname;
+
+    private String realname;
+
+    private String idnumber;
 }

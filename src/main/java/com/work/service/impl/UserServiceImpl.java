@@ -6,10 +6,12 @@ import com.work.mapper.UserMapper;
 import com.work.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.work.common.Result;
+import com.work.utils.Identifytool;
 import com.work.utils.TokenUtil;
 import com.work.utils.updateObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.DigestUtils;
 
 @Service
@@ -59,9 +61,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Result logout(String token, String username) {
         //根据用户名去数据库查找用户
         User getUser = userMapper.selectById(username);
-        if (getUser == null) {
-            return Result.error(Constants.ERROR_400, "不存在该用户!");
-        }
         //对比token
         if (!getUser.getToken().equals(token)) {
             return Result.error(Constants.ERROR_400, "参数错误!");
@@ -99,7 +98,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //重置密码
     @Override
     public Result updatePassword(String newPassword, String username) {
-        Result result = new Result();
         //去数据库查找用户
         User user = userMapper.selectById(username);
         //修改该用户的密码
@@ -138,4 +136,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return Result.success(Constants.SUCCESS, "修改用户信息成功!");
     }
+
+    //实名认证
+    @Override
+    public Result identify(String realname, String idnumber) {
+        //使用IdentifyTool工具类进行实名认证
+        Result result = new Result();
+        try {
+            result = Identifytool.identify(realname, idnumber);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
