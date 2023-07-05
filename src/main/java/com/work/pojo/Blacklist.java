@@ -5,18 +5,15 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data//黑名单表
 public class Blacklist implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer id;//黑名单id
 
-    private Integer userId;
+    private Integer userid;//被举报成功的用户id
 
-    private String reason;
-
-    private LocalDateTime blacklistedTime;
+    private String reason;//举报原因
 }

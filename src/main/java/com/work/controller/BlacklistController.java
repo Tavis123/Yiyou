@@ -1,19 +1,18 @@
 package com.work.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.work.common.Result;
+import com.work.service.BlacklistService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author wuqi
- * @since 2023-05-13
- */
 @RestController
-@RequestMapping("/system/blacklist")
+@RequestMapping("/blacklist")
 public class BlacklistController {
+
+    @Autowired
+    private BlacklistService BlacklistService;
+
+
 
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-05-13
  */
 @RestController
-@RequestMapping("/system/handling")
+@RequestMapping("/handling")
 public class HandlingController {
 
 }

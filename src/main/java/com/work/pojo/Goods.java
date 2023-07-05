@@ -6,19 +6,23 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-@Data//审核记录表
-@TableName("audit_records")
-public class Records implements Serializable {
+@Data//游戏账号表
+@TableName("game_accounts")
+public class Goods implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
     private Integer id;
 
-    private String auditedObject;
+    private Integer userId;
 
-    private String result;
+    private String gameName;
 
-    private LocalDateTime auditTime;
+    private Integer accountLevel;
+
+    private BigDecimal price;
+
+    private String status;
 }

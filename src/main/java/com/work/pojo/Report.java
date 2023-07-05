@@ -5,19 +5,20 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Data//事故处理表
-public class Handling implements Serializable {
+@Data//举报表
+public class Report implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
-    private Integer id;
+    private Integer reportid;//举报id
 
-    private String accidentType;
+    private Integer reporterid;//举报者id
 
-    private String result;
+    private Integer sellerid;//卖家id
 
-    private LocalDateTime handlingTime;
+    private Integer goodsid;//商品id
+
+    private String reason;
 
 }
