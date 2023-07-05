@@ -7,10 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * @author wq
- * @desc 拦截器
- */
 public class UserInterceptor implements HandlerInterceptor {
     @Autowired
     private UserServiceImpl userService;
