@@ -13,28 +13,28 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    //ç”¨æˆ·ä¸¾æŠ¥è¿è§„å•†å“
+    //ÓÃ»§¾Ù±¨Î¥¹æÉÌÆ·
     @PostMapping("/report")
     public Result report(@RequestParam Integer reporterid, @RequestParam Integer goodsid, @RequestParam String reason) {
         Result result = reportService.setReport(reporterid, goodsid, reason);
         return result;
     }
 
-    //æ ¹æ®å•†å“idæŸ¥çœ‹æ˜¯å¦è¢«ä¸¾æŠ¥
+    //¸ù¾İÉÌÆ·id²é¿´ÊÇ·ñ±»¾Ù±¨
     @GetMapping("/isReport")
     public Result isReport(@RequestParam Integer goodsid) {
         Result result = reportService.isReport(goodsid);
         return result;
     }
 
-    //è·å–æ‰€æœ‰è¢«ä¸¾æŠ¥çš„å•†å“
+    //»ñÈ¡ËùÓĞ±»¾Ù±¨µÄÉÌÆ·
     @GetMapping("/getReport")
     public Result getReport() {
         Result result = reportService.getAllReport();
         return result;
     }
 
-    //ç®¡ç†å‘˜å®¡æ ¸ä¸¾æŠ¥å¹¶å›å¤ä¸¾æŠ¥è€…
+    //¹ÜÀíÔ±ÉóºË¾Ù±¨²¢»Ø¸´¾Ù±¨Õß
     @PostMapping("/handle")
     public Result handle(@RequestParam Integer reportid) {
         Result result = reportService.handleReport(reportid);

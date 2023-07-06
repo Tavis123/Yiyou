@@ -8,16 +8,16 @@ import java.io.Serializable;
 
 /**
  * @author wq
- * @desc è¯·æ±‚ç»“æœç±»
+ * @desc ÇëÇó½á¹ûÀà
  */
 @Setter
 @Getter
 @NoArgsConstructor
 public class Result<T> implements Serializable {
 
-    private String code;//è¿”å›ç 
-    private String message;//è¿”å›ä¿¡æ¯
-    private T data;//è¿”å›çš„æ•°æ®å†…å®¹
+    private String code;//·µ»ØÂë
+    private String message;//·µ»ØĞÅÏ¢
+    private T data;//·µ»ØµÄÊı¾İÄÚÈİ
 
     Result(String code, String message, T data) {
         this.code = code;
@@ -25,31 +25,31 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    //ç»“æœä¸ºæˆåŠŸ
+    //½á¹ûÎª³É¹¦
     public static Result success(Object data) {
-        Result result = new Result(Constants.SUCCESS, "æˆåŠŸ", data);
+        Result result = new Result(Constants.SUCCESS, "³É¹¦", data);
         return result;
     }
 
-    //ç»“æœä¸ºæˆåŠŸ
+    //½á¹ûÎª³É¹¦
     public static Result success(String message) {
         Result result = new Result(Constants.SUCCESS, message, null);
         return result;
     }
 
-    //ç»“æœä¸ºæˆåŠŸ
+    //½á¹ûÎª³É¹¦
     public static Result success(String code, String message) {
         Result result = new Result(code, message, null);
         return result;
     }
 
-    //ç»“æœä¸ºæˆåŠŸ
+    //½á¹ûÎª³É¹¦
     public static Result success(String code, String message, Object data) {
         Result result = new Result(code, message, data);
         return result;
     }
 
-    //ç»“æœä¸ºå¤±è´¥
+    //½á¹ûÎªÊ§°Ü
     public static Result error(String code, String message) {
         Result result = new Result(code, message, null);
         return result;

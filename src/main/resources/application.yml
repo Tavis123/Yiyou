@@ -3,11 +3,10 @@ server:
 
 spring:
   datasource:
-    username: root
-    password: 123456
-    url: jdbc:mysql://localhost:3306/yiyou
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jndi-name: java:comp/env/jdbc/yiyou
+    url: jdbc:mysql://localhost:3306/yiyou?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username:
+    password: 
 
   jackson:
     deserialization:
@@ -18,7 +17,9 @@ logging:
     com.work: debug
 
 mybatis-plus:
-  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 identify:
   url: https://idcert.market.alicloudapi.com/idcard?idCard=%s&name=%s

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  å‰ç«¯æ§åˆ¶å™¨
+ *  Ç°¶Ë¿ØÖÆÆ÷
  * </p>
  *
  * @author wuqi

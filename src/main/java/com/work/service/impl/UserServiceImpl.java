@@ -19,127 +19,127 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Override
-    //ç™»å½•
+    //µÇÂ¼
     public Result login(String username, String password) {
-        //æ ¹æ®ç”¨æˆ·åå»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //¸ù¾İÓÃ»§ÃûÈ¥Êı¾İ¿â²éÕÒÓÃ»§
         User getUser = userMapper.selectById(username);
         if (getUser == null) {
-            return Result.error(Constants.ERROR_400, "ä¸å­˜åœ¨è¯¥ç”¨æˆ·!");
+            return Result.error(Constants.ERROR_400, "²»´æÔÚ¸ÃÓÃ»§!");
         }
-        //å¯¹æ¯”å¯†ç ï¼ˆæ•°æ®åº“å–å‡ºç”¨æˆ·çš„å¯†ç æ˜¯åŠ å¯†çš„ï¼Œå› æ­¤è¦æŠŠå‰ç«¯ä¼ æ¥çš„ç”¨æˆ·å¯†ç åŠ å¯†å†æ¯”å¯¹ï¼‰
+        //¶Ô±ÈÃÜÂë£¨Êı¾İ¿âÈ¡³öÓÃ»§µÄÃÜÂëÊÇ¼ÓÃÜµÄ£¬Òò´ËÒª°ÑÇ°¶Ë´«À´µÄÓÃ»§ÃÜÂë¼ÓÃÜÔÙ±È¶Ô£©
         if (!getUser.getPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes()))) {
-            return Result.error(Constants.ERROR_400, "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯!");
+            return Result.error(Constants.ERROR_400, "ÓÃ»§Ãû»òÃÜÂë´íÎó!");
         }
-        //è®¾ç½®token
+        //ÉèÖÃtoken
         String token = TokenUtil.getToken(username, password);
         getUser.setToken(token);
-        //è®¾å®šç™»å½•æˆåŠŸæ¶ˆæ¯å¹¶è¿”å›token
-        return Result.success("200", "ç™»å½•æˆåŠŸ!", token);
+        //Éè¶¨µÇÂ¼³É¹¦ÏûÏ¢²¢·µ»Øtoken
+        return Result.success("200", "µÇÂ¼³É¹¦!", token);
     }
 
     @Override
-    //æ³¨å†Œ
+    //×¢²á
     public Result register(String username, String password) {
-        //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦å­˜åœ¨(ä¸å¯é‡å¤)
+        //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñ´æÔÚ(²»¿ÉÖØ¸´)
         User getUser = userMapper.selectById(username);
         if (getUser != null) {
-            return Result.error(Constants.ERROR_400, "ç”¨æˆ·åå·²å­˜åœ¨!");
+            return Result.error(Constants.ERROR_400, "ÓÃ»§ÃûÒÑ´æÔÚ!");
         } else {
-            //è®¾ç½®ç”¨æˆ·è´¦å·å¯†ç 
+            //ÉèÖÃÓÃ»§ÕËºÅÃÜÂë
             getUser.setUsername(username);
-            //åŠ å¯†å­˜å‚¨ç”¨æˆ·çš„å¯†ç 
+            //¼ÓÃÜ´æ´¢ÓÃ»§µÄÃÜÂë
             getUser.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
-            //å­˜å…¥æ•°æ®åº“
+            //´æÈëÊı¾İ¿â
             userMapper.insert(getUser);
-            return Result.success("æ³¨å†ŒæˆåŠŸ!");
+            return Result.success("×¢²á³É¹¦!");
         }
     }
 
-    //ç™»å‡º
+    //µÇ³ö
     @Override
     public Result logout(String token, String username) {
-        //æ ¹æ®ç”¨æˆ·åå»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //¸ù¾İÓÃ»§ÃûÈ¥Êı¾İ¿â²éÕÒÓÃ»§
         User getUser = userMapper.selectById(username);
-        //å¯¹æ¯”token
+        //¶Ô±Ètoken
         if (!getUser.getToken().equals(token)) {
-            return Result.error(Constants.ERROR_400, "å‚æ•°é”™è¯¯!");
+            return Result.error(Constants.ERROR_400, "²ÎÊı´íÎó!");
         }
-        //æ¸…é™¤token
+        //Çå³ıtoken
         getUser.setToken(null);
-        //å­˜å…¥æ•°æ®åº“
+        //´æÈëÊı¾İ¿â
         userMapper.updateById(getUser);
-        return Result.success("ç™»å‡ºæˆåŠŸ!");
+        return Result.success("µÇ³ö³É¹¦!");
     }
 
 //    @Override
-//    //æ›´æ–°ç”¨æˆ·
+//    //¸üĞÂÓÃ»§
 //    public Result update(User user) throws Exception {
 //        Result result = new Result<>();
-//        //å»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+//        //È¥Êı¾İ¿â²éÕÒÓÃ»§
 //        User getUser = userMapper.selectById(user.getId());
 //        if (getUser == null) {
-//            result.setResultFailed("ç”¨æˆ·ä¸å­˜åœ¨!");
+//            result.setResultFailed("ÓÃ»§²»´æÔÚ!");
 //            return result;
 //        }
-//        //æ£€æµ‹ä¼ æ¥çš„å¯¹è±¡é‡Œé¢å­—æ®µå€¼æ˜¯å¦ä¸ºç©ºï¼Œè‹¥æ˜¯å°±ç”¨æ•°æ®åº“é‡Œé¢çš„å¯¹è±¡ç›¸åº”å­—æ®µå€¼è¡¥ä¸Š
+//        //¼ì²â´«À´µÄ¶ÔÏóÀïÃæ×Ö¶ÎÖµÊÇ·ñÎª¿Õ£¬ÈôÊÇ¾ÍÓÃÊı¾İ¿âÀïÃæµÄ¶ÔÏóÏàÓ¦×Ö¶ÎÖµ²¹ÉÏ
 //        if (!StringUtils.hasText(user.getPassword())) {
-//            //åŠ å¯†å‚¨å­˜
+//            //¼ÓÃÜ´¢´æ
 //            user.setPassword(DigestUtils.md5DigestAsHex(getUser.getPassword().getBytes()));
 //        }
-//        //å¯¹è±¡äº’è¡¥
+//        //¶ÔÏó»¥²¹
 //        ClassExamine.objectOverlap(getUser, user);
-//        //å­˜å…¥æ•°æ®åº“
+//        //´æÈëÊı¾İ¿â
 //        userMapper.update(user, null);
-//        result.setResultSuccess("ä¿®æ”¹ç”¨æˆ·æˆåŠŸ!", user);
+//        result.setResultSuccess("ĞŞ¸ÄÓÃ»§³É¹¦!", user);
 //        return result;
 //    }
 
-    //é‡ç½®å¯†ç 
+    //ÖØÖÃÃÜÂë
     @Override
     public Result updatePassword(String newPassword, String username) {
-        //å»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //È¥Êı¾İ¿â²éÕÒÓÃ»§
         User user = userMapper.selectById(username);
-        //ä¿®æ”¹è¯¥ç”¨æˆ·çš„å¯†ç 
+        //ĞŞ¸Ä¸ÃÓÃ»§µÄÃÜÂë
         user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
-        return Result.success(Constants.SUCCESS, "ä¿®æ”¹å¯†ç æˆåŠŸ!");
+        return Result.success(Constants.SUCCESS, "ĞŞ¸ÄÃÜÂë³É¹¦!");
     }
 
-    //æ›´æ¢å¤´åƒ
+    //¸ü»»Í·Ïñ
     @Override
     public Result updateAvatar(String url, String username) {
-        //å»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //È¥Êı¾İ¿â²éÕÒÓÃ»§
         User user = userMapper.selectById(username);
-        //ä¿®æ”¹è¯¥ç”¨æˆ·çš„å¤´åƒ
+        //ĞŞ¸Ä¸ÃÓÃ»§µÄÍ·Ïñ
         user.setAvatar(url);
-        return Result.success(Constants.SUCCESS, "ä¿®æ”¹å¤´åƒæˆåŠŸ!");
+        return Result.success(Constants.SUCCESS, "ĞŞ¸ÄÍ·Ïñ³É¹¦!");
     }
 
-    //è·å–ç”¨æˆ·ä¿¡æ¯
+    //»ñÈ¡ÓÃ»§ĞÅÏ¢
     @Override
     public Result getInfo(String username) {
-        //å»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //È¥Êı¾İ¿â²éÕÒÓÃ»§
         User user = userMapper.selectById(username);
-        return Result.success(Constants.SUCCESS, "è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ!", user);
+        return Result.success(Constants.SUCCESS, "»ñÈ¡ÓÃ»§ĞÅÏ¢³É¹¦!", user);
     }
 
-    //ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯
+    //ĞŞ¸ÄÓÃ»§ĞÅÏ¢
     @Override
     public Result updateInfo(User user) {
-        //å»æ•°æ®åº“æŸ¥æ‰¾ç”¨æˆ·
+        //È¥Êı¾İ¿â²éÕÒÓÃ»§
         User getUser = userMapper.selectById(user.getUsername());
-        //ä¿®æ”¹è¯¥ç”¨æˆ·çš„ä¿¡æ¯
+        //ĞŞ¸Ä¸ÃÓÃ»§µÄĞÅÏ¢
         try {
             updateObject.objectOverlap(getUser, user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.success(Constants.SUCCESS, "ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯æˆåŠŸ!");
+        return Result.success(Constants.SUCCESS, "ĞŞ¸ÄÓÃ»§ĞÅÏ¢³É¹¦!");
     }
 
-    //å®åè®¤è¯
+    //ÊµÃûÈÏÖ¤
     @Override
     public Result identify(String realname, String idnumber) {
-        //ä½¿ç”¨IdentifyToolå·¥å…·ç±»è¿›è¡Œå®åè®¤è¯
+        //Ê¹ÓÃIdentifyTool¹¤¾ßÀà½øĞĞÊµÃûÈÏÖ¤
         Result result = new Result();
         try {
             result = Identifytool.identify(realname, idnumber);

@@ -5,15 +5,15 @@ import com.work.pojo.Report;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface ReportService extends IService<Report> {
-    // ä¸¾æŠ¥å•†å“
+    // ¾Ù±¨ÉÌÆ·
     Result setReport(Integer reporterid, Integer goodsid, String reason);
 
-    // è·å–æ‰€æœ‰è¢«ä¸¾æŠ¥çš„å•†å“
+    // »ñÈ¡ËùÓĞ±»¾Ù±¨µÄÉÌÆ·
     Result getAllReport();
 
-    // ç®¡ç†å‘˜å®¡æ ¸ä¸¾æŠ¥å¹¶å›å¤ä¸¾æŠ¥è€…
+    // ¹ÜÀíÔ±ÉóºË¾Ù±¨²¢»Ø¸´¾Ù±¨Õß
     Result handleReport(Integer reportid);
 
-    //æ ¹æ®å•†å“idæŸ¥çœ‹æ˜¯å¦è¢«ä¸¾æŠ¥
+    //¸ù¾İÉÌÆ·id²é¿´ÊÇ·ñ±»¾Ù±¨
     Result isReport(Integer goodsid);
 }

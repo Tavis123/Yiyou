@@ -2,9 +2,9 @@ package com.work.utils;
 
 import com.work.pojo.User;
 
-//ç”¨äºæ›´æ–°ç”¨æˆ·ä¿¡æ¯ï¼Œå°†å‰ç«¯ä¼ æ¥çš„å­—æ®µå€¼è¦†ç›–æ•°æ®åº“ä¸­åŸæœ¬çš„å€¼
+//ÓÃÓÚ¸üĞÂÓÃ»§ĞÅÏ¢£¬½«Ç°¶Ë´«À´µÄ×Ö¶ÎÖµ¸²¸ÇÊı¾İ¿âÖĞÔ­±¾µÄÖµ
 public class updateObject {
-    //ç”¨newInfoçš„å€¼è¦†ç›–oldInfoçš„å€¼
+    //ÓÃnewInfoµÄÖµ¸²¸ÇoldInfoµÄÖµ
     public static void objectOverlap(User oldInfo, User newInfo) throws Exception {
         oldInfo.setUsername(newInfo.getUsername());
         oldInfo.setPassword(newInfo.getPassword());

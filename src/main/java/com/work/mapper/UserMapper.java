@@ -4,31 +4,31 @@ import com.work.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
-//ä¸€èˆ¬æ¥è¯´ï¼Œå¢åˆ æ”¹æ–¹æ³•çš„è¿”å›å€¼éƒ½æ˜¯intï¼Œè¡¨ç¤ºæ“ä½œæˆåŠŸè®°å½•æ¡æ•°ï¼ŒæŸ¥æ–¹æ³•ä¸€èˆ¬æ˜¯è¿”å›ç›¸åº”å¯¹è±¡æˆ–è€…å¯¹è±¡çš„Listã€‚
+//Ò»°ãÀ´Ëµ£¬ÔöÉ¾¸Ä·½·¨µÄ·µ»ØÖµ¶¼ÊÇint£¬±íÊ¾²Ù×÷³É¹¦¼ÇÂ¼ÌõÊı£¬²é·½·¨Ò»°ãÊÇ·µ»ØÏàÓ¦¶ÔÏó»òÕß¶ÔÏóµÄList¡£
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-//    //æ ¹æ®ç”¨æˆ·åæŸ¥è¯¢ç”¨æˆ·
+//    //¸ù¾İÓÃ»§Ãû²éÑ¯ÓÃ»§
 //    @Select("select * from user where username = #{username}")
 //    User selectByUsername(String username);
 //
-//    //æ–°å¢ç”¨æˆ·
+//    //ĞÂÔöÓÃ»§
 //    @Insert("insert into user(username,password,contact_info) values(#{username},#{password},#{contactInfo})")
 //    int add(User user);
 //
-//    //ä¿®æ”¹ç”¨æˆ·ä¿¡æ¯
+//    //ĞŞ¸ÄÓÃ»§ĞÅÏ¢
 //    @Update("update user set username=#{username},password=#{password},contact_info=#{contactInfo} where id=#{id}")
 //    int update(User user);
 //
-//    //åˆ é™¤ç”¨æˆ·
+//    //É¾³ıÓÃ»§
 //    @Delete("delete from user where id=#{id}")
 //    int delete(Integer id);
 //
-//    //æ ¹æ®idè·å–ç”¨æˆ·
+//    //¸ù¾İid»ñÈ¡ÓÃ»§
 //    @Select("select * from user where id=#{id}")
 //    User getById(Integer id);
 //
-//    //æ ¹æ®ç”¨æˆ·åè·å–ç”¨æˆ·
+//    //¸ù¾İÓÃ»§Ãû»ñÈ¡ÓÃ»§
 //    @Select("select * from user where username=#{username}")
 //    User getByUsername(String username);
 
