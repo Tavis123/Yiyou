@@ -1,5 +1,6 @@
 package com.work.utils;
 
+import com.work.common.ResultCode;
 import com.work.common.Result;
 
 import java.io.BufferedReader;
@@ -18,9 +19,9 @@ public class Identifytool {
 
     public static Result identify(String realname, String idnumber) {
         Result result = new Result();
-        String host = "https://localhost:8080"; //请求地址
-        String path = "/identify";//后缀
-        String appcode = "ba6bb17924cd48a1ae6054bebfa5ae6b";
+        String host = "https://idcert.market.alicloudapi.com"; //请求地址
+        String path = "/idcard";//后缀
+        String appcode = "ba6bb17924cd48a1ae6054bebfa5ae6b";//购买的AppCode
         try {
             String urlSend = host + path + "?idCard=" + idnumber + "&name=" + URLEncoder.encode(realname, "UTF-8");//拼接请求链接
             URL url = new URL(urlSend);
@@ -29,32 +30,49 @@ public class Identifytool {
             int httpCode = httpURLCon.getResponseCode();
             if (httpCode == 200) {
                 String json = read(httpURLCon.getInputStream());
-                System.out.println("正常请求计费(其他均不计费)");
-                System.out.println("获取返回的json：");
-                System.out.print(json);
+                int colonIndex = json.indexOf(":");
+                int commaIndex = json.indexOf(",");
+                //获取json中的code
+                String code = json.substring(colonIndex + 2, commaIndex - 1);
+                System.out.println(code);
+                if (code.equals("01")) {
+                    result = Result.success(ResultCode.SUCCESS, "实名认证通过!");
+                } else if (code.equals("02")) {
+                    result = Result.error(ResultCode.ERROR, "实名认证失败!");
+                } else if (code.equals("202")) {
+                    result = Result.error(ResultCode.ERROR, "无法认证!");
+                } else if (code.equals("203")) {
+                    result = Result.error(ResultCode.ERROR, "异常情况!");
+                } else if (code.equals("204")) {
+                    result = Result.error(ResultCode.ERROR, "姓名格式不正确!");
+                } else if (code.equals("205")) {
+                    result = Result.error(ResultCode.ERROR, "身份证格式不正确!");
+                } else if (code.equals("9999")) {
+                    result = Result.error(ResultCode.ERROR, "系统维护!");
+                }
             } else {
                 Map<String, List<String>> map = httpURLCon.getHeaderFields();
                 String error = map.get("X-Ca-Error-Message").get(0);
                 if (httpCode == 400 && error.equals("Invalid AppCode `not exists`")) {
-                    result = Result.error("401", "AppCode错误 ");
+                    result = Result.error(ResultCode.ERROR, "AppCode错误 ");
                 } else if (httpCode == 400 && error.equals("Invalid Url")) {
-                    result = Result.error("401", "请求的 Method、Path 或者环境错误");
+                    result = Result.error(ResultCode.ERROR, "请求的 Method、Path 或者环境错误");
                 } else if (httpCode == 400 && error.equals("Invalid Param Location")) {
-                    result = Result.error("400", "参数错误");
+                    result = Result.error(ResultCode.ERROR, "参数错误");
                 } else if (httpCode == 403 && error.equals("Unauthorized")) {
-                    result = Result.error("401", "服务未被授权（或URL和Path不正确）");
+                    result = Result.error(ResultCode.ERROR, "服务未被授权（或URL和Path不正确）");
                 } else if (httpCode == 403 && error.equals("Quota Exhausted")) {
-                    result = Result.error("401", "套餐包次数用完");
+                    result = Result.error(ResultCode.ERROR, "套餐包次数用完");
                 } else if (httpCode == 403 && error.equals("Api Market Subscription quota exhausted")) {
-                    result = Result.error("401", "套餐包次数用完，请续购套餐");
+                    result = Result.error(ResultCode.ERROR, "套餐包次数用完，请续购套餐");
                 } else {
-                    result = Result.error("401", "参数名错误 或 其他错误");
+                    result = Result.error(ResultCode.ERROR, "参数名错误 或 其他错误");
                 }
             }
         } catch (MalformedURLException e) {
-            result = Result.error("401", "URL格式错误");
+            result = Result.error(ResultCode.ERROR, "URL格式错误");
         } catch (UnknownHostException e) {
-            result = Result.error("401", "URL地址错误");
+            result = Result.error(ResultCode.ERROR, "URL地址错误");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,10 +89,6 @@ public class Identifytool {
         while ((line = br.readLine()) != null) {
             line = new String(line.getBytes(), "utf-8");
             sb.append(line);
-            //在读取到idCard时停止
-            if (line.contains("idCard")) {
-                break;
-            }
         }
         br.close();
         return sb.toString();

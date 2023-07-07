@@ -19,6 +19,6 @@ public class Report implements Serializable {
 
     private Integer goodsid;//商品id
 
-    private String reason;
+    private String reason;//举报原因
 
 }

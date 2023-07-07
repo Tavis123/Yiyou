@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 public interface ReportService extends IService<Report> {
     // 举报商品
-    Result setReport(Integer reporterid, Integer goodsid, String reason);
+    Result setReport(Integer reporterid, Integer goodsid, Integer sellerid, String reason);
 
     // 获取所有被举报的商品
     Result getAllReport();

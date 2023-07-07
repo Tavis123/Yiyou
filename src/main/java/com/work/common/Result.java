@@ -3,23 +3,20 @@ package com.work.common;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 
-/**
- * @author wq
- * @desc 请求结果类
- */
 @Setter
 @Getter
 @NoArgsConstructor
-public class Result<T> implements Serializable {
+public class Result implements Serializable {
 
-    private String code;//返回码
+    private Integer code;//返回码
     private String message;//返回信息
-    private T data;//返回的数据内容
+    private Object data;//返回的数据内容
 
-    Result(String code, String message, T data) {
+    Result(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -27,32 +24,32 @@ public class Result<T> implements Serializable {
 
     //结果为成功
     public static Result success(Object data) {
-        Result result = new Result(Constants.SUCCESS, "成功", data);
-        return result;
+        return new Result(ResultCode.SUCCESS, "成功", data);
     }
 
     //结果为成功
     public static Result success(String message) {
-        Result result = new Result(Constants.SUCCESS, message, null);
-        return result;
+        return new Result(ResultCode.SUCCESS, message, null);
     }
 
     //结果为成功
-    public static Result success(String code, String message) {
-        Result result = new Result(code, message, null);
-        return result;
+    public static Result success(Integer code, String message) {
+        return new Result(code, message, null);
     }
 
     //结果为成功
-    public static Result success(String code, String message, Object data) {
-        Result result = new Result(code, message, data);
-        return result;
+    public static Result success(Integer code, String message, Object data) {
+        return new Result(code, message, data);
     }
 
     //结果为失败
-    public static Result error(String code, String message) {
-        Result result = new Result(code, message, null);
-        return result;
+    public static Result error(Integer code, String message) {
+        return new Result(code, message, null);
+    }
+
+    //将Result对象转为Json字符串
+    public String ObjectToJson(Result result) {
+        return JSONObject.toJSONString(result);
     }
 
 }

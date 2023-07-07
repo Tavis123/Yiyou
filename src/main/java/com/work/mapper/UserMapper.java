@@ -3,14 +3,15 @@ package com.work.mapper;
 import com.work.pojo.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 //一般来说，增删改方法的返回值都是int，表示操作成功记录条数，查方法一般是返回相应对象或者对象的List。
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-//    //根据用户名查询用户
-//    @Select("select * from user where username = #{username}")
-//    User selectByUsername(String username);
+    //根据用户名查询用户
+    @Select("select * from user where username = #{username}")
+    User selectByUsername(String username);
 //
 //    //新增用户
 //    @Insert("insert into user(username,password,contact_info) values(#{username},#{password},#{contactInfo})")

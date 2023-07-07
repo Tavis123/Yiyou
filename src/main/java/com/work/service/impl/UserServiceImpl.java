@@ -1,6 +1,6 @@
 package com.work.service.impl;
 
-import com.work.common.Constants;
+import com.work.common.ResultCode;
 import com.work.pojo.User;
 import com.work.mapper.UserMapper;
 import com.work.service.UserService;
@@ -9,6 +9,7 @@ import com.work.common.Result;
 import com.work.utils.Identifytool;
 import com.work.utils.TokenUtil;
 import com.work.utils.updateObject;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -22,36 +23,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //登录
     public Result login(String username, String password) {
         //根据用户名去数据库查找用户
-        User getUser = userMapper.selectById(username);
+        User getUser = userMapper.selectByUsername(username);
         if (getUser == null) {
-            return Result.error(Constants.ERROR_400, "不存在该用户!");
+            return Result.error(ResultCode.ERROR, "不存在该用户!");
         }
         //对比密码（数据库取出用户的密码是加密的，因此要把前端传来的用户密码加密再比对）
         if (!getUser.getPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes()))) {
-            return Result.error(Constants.ERROR_400, "用户名或密码错误!");
+            return Result.error(ResultCode.ERROR, "用户名或密码错误!");
         }
         //设置token
         String token = TokenUtil.getToken(username, password);
         getUser.setToken(token);
+        //存入数据库
+        userMapper.updateById(getUser);
         //设定登录成功消息并返回token
-        return Result.success("200", "登录成功!", token);
+        return Result.success(ResultCode.SUCCESS, "登录成功!", token);
     }
 
     @Override
     //注册
     public Result register(String username, String password) {
-        //判断用户名是否存在(不可重复)
-        User getUser = userMapper.selectById(username);
+        //根据用户名去数据库中查找是否存在该用户
+        User getUser = userMapper.selectByUsername(username);
         if (getUser != null) {
-            return Result.error(Constants.ERROR_400, "用户名已存在!");
+            return Result.error(ResultCode.ERROR, "用户名已存在!");
         } else {
-            //设置用户账号密码
+            getUser = new User();
+            //设置用户账号
             getUser.setUsername(username);
+            //默认初始昵称和用户名相同
+            getUser.setNickname(username);
             //加密存储用户的密码
             getUser.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
             //存入数据库
             userMapper.insert(getUser);
-            return Result.success("注册成功!");
+            return Result.success(ResultCode.SUCCESS, "注册成功!");
         }
     }
 
@@ -59,10 +65,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result logout(String token, String username) {
         //根据用户名去数据库查找用户
-        User getUser = userMapper.selectById(username);
-        //对比token
+        User getUser = userMapper.selectByUsername(username);
+        if (getUser == null) {
+            return Result.error(ResultCode.ERROR, "不存在该用户!");
+        }
+        //token错误
         if (!getUser.getToken().equals(token)) {
-            return Result.error(Constants.ERROR_400, "参数错误!");
+            return Result.error(ResultCode.ERROR, "token错误!");
         }
         //清除token
         getUser.setToken(null);
@@ -98,42 +107,50 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Result updatePassword(String newPassword, String username) {
         //去数据库查找用户
-        User user = userMapper.selectById(username);
+        User user = userMapper.selectByUsername(username);
         //修改该用户的密码
         user.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
-        return Result.success(Constants.SUCCESS, "修改密码成功!");
+        return Result.success(ResultCode.SUCCESS, "修改密码成功!");
     }
 
     //更换头像
     @Override
     public Result updateAvatar(String url, String username) {
         //去数据库查找用户
-        User user = userMapper.selectById(username);
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            return Result.error(ResultCode.ERROR, "不存在该用户!");
+        }
         //修改该用户的头像
         user.setAvatar(url);
-        return Result.success(Constants.SUCCESS, "修改头像成功!");
+        //存入数据库
+        userMapper.updateById(user);
+        return Result.success(ResultCode.SUCCESS, "修改头像成功!");
     }
 
     //获取用户信息
     @Override
     public Result getInfo(String username) {
         //去数据库查找用户
-        User user = userMapper.selectById(username);
-        return Result.success(Constants.SUCCESS, "获取用户信息成功!", user);
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            return Result.error(ResultCode.ERROR, "不存在该用户!");
+        }
+        return Result.success(ResultCode.SUCCESS, "获取用户信息成功!", user);
     }
 
     //修改用户信息
     @Override
     public Result updateInfo(User user) {
         //去数据库查找用户
-        User getUser = userMapper.selectById(user.getUsername());
+        User getUser = userMapper.selectByUsername(user.getUsername());
         //修改该用户的信息
         try {
             updateObject.objectOverlap(getUser, user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.success(Constants.SUCCESS, "修改用户信息成功!");
+        return Result.success(ResultCode.SUCCESS, "修改用户信息成功!");
     }
 
     //实名认证
