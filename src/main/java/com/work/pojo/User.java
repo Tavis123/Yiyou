@@ -37,4 +37,8 @@ public class User implements Serializable {
     private String realname;
 
     private String idnumber;
+
+    private int commodityNum;
+
+    private double money;
 }

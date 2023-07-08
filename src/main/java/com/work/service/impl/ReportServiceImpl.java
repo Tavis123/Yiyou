@@ -2,6 +2,7 @@ package com.work.service.impl;
 
 import com.work.common.ResultCode;
 import com.work.common.Result;
+import com.work.mapper.BlacklistMapper;
 import com.work.mapper.UserMapper;
 import com.work.pojo.Blacklist;
 import com.work.pojo.Report;
@@ -22,6 +23,9 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private BlacklistMapper blacklistMapper;
 
     // 举报商品
     @Override
@@ -75,6 +79,8 @@ public class ReportServiceImpl extends ServiceImpl<ReportMapper, Report> impleme
             Blacklist blacklist = new Blacklist();
             blacklist.setUserid(report.getSellerid());
             blacklist.setReason(reason);
+            //存入黑名单表
+            blacklistMapper.insert(blacklist);
 
             //将卖家的昵称和头像作特殊处理
             String nickname = userMapper.selectById(report.getSellerid()).getNickname();

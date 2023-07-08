@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.work.pojo.mapper.ChatMapper">
+    <!-- 查找两用户之间是否存在联系，返回linkId -->
+    <select id="selectAssociation" resultType="String"> select link_id
+                                                        from chat_user_link
+                                                        where from_user = #{fromUser} and to_user = #{toUser}
+                                                           or from_user = #{toUser} and to_user = #{fromUser}; </select>
+    <!-- 添加两用户之间的关联，返回linkId -->
+    <insert id="addAssociation"
+            parameterType="com.work.pojo.ChatLink"> insert into chat_user_link(link_id, from_user, to_user, create_time) VALUE (#{linkId}, #{fromUser}, #{toUser}, #{createTime}); </insert>
+    <resultMap id="chatListMap" type="com.work.pojo.ChatListData">
+        <result property="linkId" column="link_id"/>
+        <result property="friendName" column="to_user"/>
+        <result property="friendPicture" column="to_user_picture"/>
+        <result property="lastMessage" column="content"/>
+        <result property="unread" column="unread"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="fromWindow" column="from_window"/>
+    </resultMap>
+    <!-- 查询用户的聊天列表记录 -->
+    <select id="selectChatLists" parameterType="String" resultMap="com.work.pojo.chatListMap"> select cl.link_id,
+                                                                                                      cl.to_user,
+                                                                                                      to_user_picture,
+                                                                                                      content,
+                                                                                                      unread,
+                                                                                                      send_time,
+                                                                                                      from_window
+                                                                                               from chat_list as cl,
+                                                                                                    chat_message as cm
+                                                                                               where cl.from_user = #{fromUser}
+                                                                                                 and cl.link_id = cm.link_id
+                                                                                                 and cm.is_latest = 1
+                                                                                               order by send_time Desc; </select>
+    <!-- 添加两用户的聊天列表 -->
+    <insert id="addChatListRecords" parameterType="ArrayList">
+        insert into chat_list(link_id, from_user, to_user, to_user_picture, from_window, to_window, unread) values
+        <foreach collection="chatLists" index="index" separator="," item="item">(#{item.linkId}, #{item.fromUser},
+            #{item.toUser}, #{item.toUserPicture}, #{item.fromWindow}, ${item.toWindow}, #{item.unread})
+        </foreach>
+    </insert>
+    <resultMap id="chatMessageDataMap" type="com.work.pojo.ChatMessageData">
+        <result property="sendUser" column="from_user"/>
+        <result property="content" column="content"/>
+        <result property="sendTime" column="send_time"/>
+    </resultMap>
+    <!-- 根据linkId查询聊天记录 -->
+    <select id="selectChatMessages" resultMap="com.work.pojo.chatMessageDataMap"> select *
+                                                                                  from chat_message
+                                                                                  where link_id = #{linkId}
+                                                                                  ORDER By send_time DESC
+                                                                                  limit #{startIndex}, #{messageSize}; </select>
+    <!-- 根据linkId查询信息总数量 -->
+    <select id="selectChatMessagesTotalNumber" resultType="Integer"> select count(*)
+                                                                     from chat_message
+                                                                     where link_id = #{linkId}; </select>
+    <!-- 添加聊天信息记录 -->
+    <insert id="addChatMessage"
+            parameterType="com.work.pojo.ChatMessage"> insert into chat_message(link_id, from_user, to_user, content, send_time, type, is_latest) value (#{linkId},
+                                                                                                                                                         #{fromUser},
+                                                                                                                                                         #{toUser},
+                                                                                                                                                         #{content},
+                                                                                                                                                         #{sendTime},
+                                                                                                                                                         #{type},
+                                                                                                                                                         #{isLatest}); </insert>
+    <!-- 查询聊天用户是否在同一个窗口的值 -->
+    <select id="selectIsSaveWindows" parameterType="String" resultType="Integer"> select from_window + to_window
+                                                                                  from chat_list
+                                                                                  where link_id = #{linkId}
+                                                                                    and from_user = #{fromUser}
+                                                                                    and to_user = #{toUser}; </select>
+    <!-- 更新聊天用户是否在同一个窗口的值 -->
+    <update id="updateIsSaveWindows"> update chat_list
+                                      set from_window = 1
+                                      where link_id = #{linkId}
+                                        and from_user = #{fromUser};
+    update chat_list
+    set to_window = 1
+    where link_id = #{linkId}
+      and to_user = #{fromUser}; </update>
+    <!-- 更新聊天用户其他的窗口值 -->
+    <update id="updateOtherWindows"> update chat_list
+                                     set from_window = 0
+                                     where link_id != #{linkId}
+                                       and from_user = #{fromUser};
+    update chat_list
+    set to_window = 0
+    where link_id != #{linkId}
+      and to_user = #{fromUser}; </update>
+    <!-- 更新接收者的未读数 -->
+    <update id="updateUnread"> update chat_list
+                               set unread = unread + #{newUnread}
+                               where link_id = #{linkId}
+                                 and to_user = #{fromUser}
+                                 and from_user = #{toUser}; </update>
+    <!-- 清空接收者的未读数(列表中的未读数为发送者的未读数) -->
+    <update id="clearUnread"> update chat_list
+                              set unread = 0
+                              where link_id = #{linkId}
+                                and from_user = #{fromUser}
+                                and to_user = #{toUser}; </update>
+    <!-- 更新信息的状态（是否为最后一条） -->
+    <update id="updateMessageStatus" parameterType="String"> update chat_message
+                                                             set is_latest = 0
+                                                             where link_id = #{linkId}
+                                                               and is_latest = 1; </update>
+    <!-- 查询用户所有的未读数 -->
+    <select id="selectUnreadTotalNumber" parameterType="String" resultType="Integer"> select sum(unread)
+                                                                                      from chat_list
+                                                                                      where from_user = #{username}; </select>
+    <!-- 重置聊天用户的窗口值 -->
+    <update id="resetWindows"> update chat_list
+                               set from_window = 0
+                               where from_user = #{username};
+    update chat_list
+    set to_window = 0
+    where to_user = #{username}; </update>
+</mapper>

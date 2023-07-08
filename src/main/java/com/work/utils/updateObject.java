@@ -11,7 +11,6 @@ public class updateObject {
         oldInfo.setAvatar(newInfo.getAvatar());
         oldInfo.setToken(newInfo.getToken());
         oldInfo.setNickname(newInfo.getNickname());
-
     }
 
 }

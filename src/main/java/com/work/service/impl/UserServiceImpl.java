@@ -9,7 +9,6 @@ import com.work.common.Result;
 import com.work.utils.Identifytool;
 import com.work.utils.TokenUtil;
 import com.work.utils.updateObject;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -80,29 +79,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Result.success("登出成功!");
     }
 
-//    @Override
-//    //更新用户
-//    public Result update(User user) throws Exception {
-//        Result result = new Result<>();
-//        //去数据库查找用户
-//        User getUser = userMapper.selectById(user.getId());
-//        if (getUser == null) {
-//            result.setResultFailed("用户不存在!");
-//            return result;
-//        }
-//        //检测传来的对象里面字段值是否为空，若是就用数据库里面的对象相应字段值补上
-//        if (!StringUtils.hasText(user.getPassword())) {
-//            //加密储存
-//            user.setPassword(DigestUtils.md5DigestAsHex(getUser.getPassword().getBytes()));
-//        }
-//        //对象互补
-//        ClassExamine.objectOverlap(getUser, user);
-//        //存入数据库
-//        userMapper.update(user, null);
-//        result.setResultSuccess("修改用户成功!", user);
-//        return result;
-//    }
-
     //重置密码
     @Override
     public Result updatePassword(String newPassword, String username) {
@@ -165,5 +141,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return result;
     }
+
+    @Override
+    public User selectUserById(String userId)//通过账号来查询某个账户
+    {
+        return userMapper.selectUserById(userId);
+    }
+
+    @Override
+    public int updateNum(int cosmmodityNum, String userId)//改变某个账号的发布商品数目；
+    {
+        return userMapper.updateNum(cosmmodityNum, userId);
+    }
+
+    @Override
+    public int updateMoney(double money, String userId) {
+        return userMapper.updateMoney(money, userId);
+    }
+
 
 }

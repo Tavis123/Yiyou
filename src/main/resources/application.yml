@@ -1,5 +1,17 @@
 server:
   port: 9355
+  servlet:
+    session:
+      tracking-modes: cookie
+
+sa-token:
+  token-name: satoken
+  timeout: 2592000
+  activity-timeout: -1
+  is-concurrent: true
+  is-share: true
+  token-style: uuid
+  is-log: false
 
 spring:
   datasource:
@@ -7,16 +19,30 @@ spring:
     url: jdbc:mysql://localhost:3306/yiyou
     username: root
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 2048MB
 
   jackson:
     deserialization:
       fail-on-unknown-properties: false
     default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  http:
+    multipart:
+      location: /data/upload_tmp
 logging:
   level:
     com.work: debug
 
 mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
