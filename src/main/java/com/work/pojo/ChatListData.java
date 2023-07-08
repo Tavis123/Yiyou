@@ -6,25 +6,25 @@ import java.io.Serializable;
 public class ChatListData implements Serializable {
 
 
-    //ä¸¤è€…çš„å…³è”id
+    //Á½ÕßµÄ¹ØÁªid
     private String linkId;
 
-    //èŠå¤©å¯¹è±¡ç”¨æˆ·å
+    //ÁÄÌì¶ÔÏóÓÃ»§Ãû
     private String friendName;
 
-    //èŠå¤©å¯¹è±¡çš„å¤´åƒ
+    //ÁÄÌì¶ÔÏóµÄÍ·Ïñ
     private String friendPicture;
 
-    //æœ€åä¸€æ¡ä¿¡æ¯
+    //×îºóÒ»ÌõĞÅÏ¢
     private String lastMessage;
 
-    //æœªè¯»æ•°
+    //Î´¶ÁÊı
     private int unread;
 
-    //æœ€åä¸€æ¡ä¿¡æ¯å‘é€æ—¶é—´
+    //×îºóÒ»ÌõĞÅÏ¢·¢ËÍÊ±¼ä
     private String sendTime;
 
-    //å‘é€è€…åœ¨å“ªä¸ªèŠå¤©æ¡†
+    //·¢ËÍÕßÔÚÄÄ¸öÁÄÌì¿ò
     private int fromWindow;
 
     public String getLinkId() {

@@ -19,8 +19,8 @@ public interface UserMapper extends BaseMapper<User> {
     User selectUserById(String userId);
 
     //改变某个账号的发布商品数目
-    @Update("update user set commodityNum = #{commodityNum} where userId = #{userId}")
-    int updateNum(int commodityNum, String userId);
+    @Update("update user set commodity_num = #{commodity_num} where username = #{username}")
+    int updateNum(int commodity_num, String username);
 
     //改变某个账号的余额
     @Update("update user set money = #{money} where userId = #{userId}")

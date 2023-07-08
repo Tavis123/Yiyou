@@ -27,7 +27,7 @@ public class CommodityServiceImpl implements CommodityService {
 
     @Override
     public int deleteCommodity(String commodityId) {
-        return commodityMapper.deleteById(commodityId);
+        return commodityMapper.deleteCommodity(commodityId);
     }
 
     @Override

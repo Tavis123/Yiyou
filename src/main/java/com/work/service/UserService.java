@@ -40,4 +40,5 @@ public interface UserService extends IService<User> {
 
     //改变某个账号的余额
     int updateMoney(double money, String userId);
+
 }

@@ -15,6 +15,9 @@ public interface CommodityMapper extends BaseMapper<Commodity> {
     @Update("update commodity set isPass = #{isPass} where commodityId = #{commodityId}")
     int changeIsPass(int isPass, String commodityId);
 
+    @Delete("delete from commodity where commodityId = #{commodityId}")
+    int deleteCommodity(String commodityId);
+
     //查询某个人发布的所有商品,不能查询到未上架的
     @Select("select * from commodity where publisherId = #{publisherId} and isPass = 2")
     List<Commodity> selectAllByPublishId(String publishId);
@@ -24,14 +27,14 @@ public interface CommodityMapper extends BaseMapper<Commodity> {
     List<Commodity> selectAllSelfByPublishId(String publishId);
 
     //通过商品id来查询某个商品,不能查询未上架的
-    @Select("select * from  yigame.commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2 union select * from yigame.commodity c right join detailpicture d on c.commodityId = d.commodityId where d.commodityId=#{commodityId} and isPass=2")
+    @Select("select * from  commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2 union select * from commodity c right join detailpicture d on c.commodityId = d.commodityId where d.commodityId=#{commodityId} and isPass=2")
     RetCommodity selectOneByCommodityId(String commodityId);
 
-    @Select("select * from  yigame.commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2 union select * from yigame.commodity c right join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2")
+    @Select("select * from  commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2 union select * from commodity c right join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} and isPass=2")
     List<RetCommodity> selectOneByCommodityId1(String commodityId);
 
     //通过商品id来查询自己发布某个商品,可以查询未上架的
-    @Select("select * from  yigame.commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} union select *from yigame.commodity c right join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId}")
+    @Select("select * from  commodity c left join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId} union select *from commodity c right join detailpicture d on c.commodityId = d.commodityId where c.commodityId=#{commodityId}")
     RetCommodity selectOneSelfByCommodityId(String commodityId);
 
     // List<Commodity> selectAllByPrice(int highPrice,int lowPrice);

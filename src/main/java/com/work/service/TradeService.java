@@ -11,9 +11,9 @@ public interface TradeService {
 
     Trade selectTradeByTradeId(String tradeId);
 
-    List<Trade> selectAllTradeByBusinessManId(String businessManId);//鏌ョ湅鍟嗗鑷繁鍗栦簡澶氬皯鍟嗗搧
+    List<Trade> selectAllTradeByBusinessManId(String businessManId);//查看商家自己卖了多少商品
 
-    List<Trade> selectTradeByCustomerId(String customerId);//鏌ョ湅鑷繁涓嬩簡澶氬皯璁㈠崟;
+    List<Trade> selectTradeByCustomerId(String customerId);//查看自己下了多少订单;
 
     int deleteTrade(String tradeId);
 }

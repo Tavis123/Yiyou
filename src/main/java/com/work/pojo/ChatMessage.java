@@ -4,35 +4,34 @@ import java.util.Date;
 
 public class ChatMessage {
 
-    //æ–‡æœ¬
+    //ÎÄ±¾
     public static final int MESSAGE_TYPE_TEXT = 0;
 
-    //å›¾ç‰‡
+    //Í¼Æ¬
     public static final int MESSAGE_TYPE_IMAGE = 1;
 
-
-    //ä¿¡æ¯idï¼ˆè‡ªå¢ï¼‰
+    //ĞÅÏ¢id£¨×ÔÔö£©
     private int messageId;
 
-    //å…³ç³»è¡¨id
+    //¹ØÏµ±íid
     private String linkId;
 
-    //å‘é€è€…
+    //·¢ËÍÕß
     private String fromUser;
 
-    //æ¥æ”¶è€…
+    //½ÓÊÕÕß
     private String toUser;
 
-    //å†…å®¹
+    //ÄÚÈİ
     private String content;
 
-    //å‘é€æ—¶é—´
+    //·¢ËÍÊ±¼ä
     private Date sendTime;
 
-    //æ¶ˆæ¯ç±»å‹  0--æ™®é€šæ–‡æœ¬ï¼ˆé»˜è®¤ï¼‰
+    //ÏûÏ¢ÀàĞÍ  0--ÆÕÍ¨ÎÄ±¾£¨Ä¬ÈÏ£©
     private int type = MESSAGE_TYPE_TEXT;
 
-    //æ˜¯å¦ä¸ºæœ€åä¸€æ¡
+    //ÊÇ·ñÎª×îºóÒ»Ìõ
     private Boolean isLatest;
 
     public ChatMessage() {

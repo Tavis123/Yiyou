@@ -18,23 +18,22 @@ public class ChatController {
         boolean flag = chatService.isFirstChat(fromUser, toUser);
 
         if (flag) {
-            return ResultInfo.successInfo("ç¬¬ä¸€æ¬¡è¿›è¡ŒèŠå¤©");
+            return ResultInfo.successInfo("µÚÒ»´Î½øĞĞÁÄÌì");
         } else {
-            return ResultInfo.failInfo("ä¸æ˜¯ç¬¬ä¸€æ¬¡è¿›è¡ŒèŠå¤©");
+            return ResultInfo.failInfo("²»ÊÇµÚÒ»´Î½øĞĞÁÄÌì");
         }
     }
 
 
     @GetMapping("/getChatList")
     public ResultInfo chatList(@RequestParam String fromUser) {
-        //è·å–å½“å‰ç”¨æˆ·çš„èŠå¤©åˆ—è¡¨è¿”å›
+        //»ñÈ¡µ±Ç°ÓÃ»§µÄÁÄÌìÁĞ±í·µ»Ø
         return chatService.getFromUserChatList(fromUser);
     }
 
     @GetMapping("/getChatRecords")
     public ResultInfo recentChatRecords(@RequestParam String toUser, @RequestParam int startIndex, @RequestParam int pageSize, @RequestParam String fromUser) {
-
-        //è·å–æœ€è¿‘çš„èŠå¤©è®°å½•
+        //»ñÈ¡×î½üµÄÁÄÌì¼ÇÂ¼
         return chatService.getRecentChatRecords(fromUser, toUser, startIndex, pageSize);
 
     }
@@ -59,7 +58,7 @@ public class ChatController {
     @GetMapping("/resetWindows")
     public ResultInfo resetWindows(@RequestParam String username) {
         chatService.resetWindows(username);
-        return ResultInfo.successInfo("é‡ç½®æˆåŠŸï¼");
+        return ResultInfo.successInfo("ÖØÖÃ³É¹¦£¡");
     }
 
 }

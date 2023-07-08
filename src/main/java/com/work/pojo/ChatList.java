@@ -3,31 +3,31 @@ package com.work.pojo;
 
 public class ChatList {
 
-    //åˆ—è¡¨idï¼ˆè‡ªå¢ï¼‰
+    //ÁĞ±íid£¨×ÔÔö£©
     private int listId;
 
-    //å…³ç³»è¡¨ä¸»é”®
+    //¹ØÏµ±íÖ÷¼ü
     private String linkId;
 
-    //å‘é€è€…
+    //·¢ËÍÕß
     private String fromUser;
 
-    //æ¥æ”¶è€…
+    //½ÓÊÕÕß
     private String toUser;
 
-    //æ¥æ”¶è€…çš„å›¾ç‰‡
+    //½ÓÊÕÕßµÄÍ¼Æ¬
     private String toUserPicture;
 
-    //å‘é€è€…æ˜¯å¦åœ¨çª—å£
+    //·¢ËÍÕßÊÇ·ñÔÚ´°¿Ú
     private Boolean fromWindow;
 
-    //æ¥æ”¶è€…æ˜¯å¦åœ¨çª—å£
+    //½ÓÊÕÕßÊÇ·ñÔÚ´°¿Ú
     private Boolean toWindow;
 
-    //æœªè¯»æ•° fromUserçš„æœªè¯»æ•°
+    //Î´¶ÁÊı fromUserµÄÎ´¶ÁÊı
     private int unread;
 
-    //æ˜¯å¦è¢«åˆ é™¤
+    //ÊÇ·ñ±»É¾³ı
     private Boolean status;
 
     public ChatList(String linkId, String fromUser, String toUser, String toUserPicture, Boolean fromWindow, Boolean toWindow, int unread) {

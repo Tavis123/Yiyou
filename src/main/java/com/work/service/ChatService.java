@@ -6,7 +6,7 @@ import com.work.pojo.ResultInfo;
 public interface ChatService {
 
     /**
-     * æŸ¥è¯¢èŠå¤©åŒæ–¹çš„å…³è”id
+     * ²éÑ¯ÁÄÌìË«·½µÄ¹ØÁªid
      * @param fromUser
      * @param toUser
      * @return
@@ -14,7 +14,7 @@ public interface ChatService {
     String selectAssociation(String fromUser, String toUser);
 
     /**
-     * æ˜¯å¦ç¬¬ä¸€æ¬¡èŠå¤©
+     * ÊÇ·ñµÚÒ»´ÎÁÄÌì
      * @param fromUser
      * @param toUser
      * @return
@@ -22,21 +22,21 @@ public interface ChatService {
     boolean isFirstChat(String fromUser, String toUser);
 
     /**
-     * ä¿å­˜èŠå¤©è®°å½•
+     * ±£´æÁÄÌì¼ÇÂ¼
      * @param chatMessage
      * @return
      */
     void saveMessage(ChatMessage chatMessage);
 
     /**
-     * è·å–å½“å‰ç”¨æˆ·çš„èŠå¤©åˆ—è¡¨
+     * »ñÈ¡µ±Ç°ÓÃ»§µÄÁÄÌìÁĞ±í
      * @param fromUser
      * @return
      */
     ResultInfo getFromUserChatList(String fromUser);
 
     /**
-     * è·å–å‘é€è€…ä¸æ¥æ”¶è€…çš„æœ€è¿‘çš„èŠå¤©è®°å½•
+     * »ñÈ¡·¢ËÍÕßÓë½ÓÊÕÕßµÄ×î½üµÄÁÄÌì¼ÇÂ¼
      * @param fromUser
      * @param toUser
      * @param startIndex
@@ -46,14 +46,14 @@ public interface ChatService {
     ResultInfo getRecentChatRecords(String fromUser, String toUser, int startIndex, int pageSize);
 
     /**
-     * è·å–å‘é€è€…ä¸æ¥æ”¶è€…èŠå¤©è®°å½•çš„æ€»é¡µæ•°
+     * »ñÈ¡·¢ËÍÕßÓë½ÓÊÕÕßÁÄÌì¼ÇÂ¼µÄ×ÜÒ³Êı
      * @param linkId
      * @return
      */
     ResultInfo getPageNumber(String linkId);
 
     /**
-     * æ›´æ–°æ˜¯å¦åœ¨åŒä¸€çª—å£å€¼
+     * ¸üĞÂÊÇ·ñÔÚÍ¬Ò»´°¿ÚÖµ
      * @param fromUser
      * @param toUser
      */
@@ -61,14 +61,14 @@ public interface ChatService {
 
 
     /**
-     * è·å–å½“å‰ç”¨æˆ·çš„æœªè¯»æ•°
+     * »ñÈ¡µ±Ç°ÓÃ»§µÄÎ´¶ÁÊı
      * @param username
      * @return
      */
     ResultInfo getUnreadTotalNumber(String username);
 
     /**
-     * é‡ç½®çª—å£å€¼
+     * ÖØÖÃ´°¿ÚÖµ
      * @param username
      */
     void resetWindows(String username);

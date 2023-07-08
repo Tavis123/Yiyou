@@ -1,10 +1,8 @@
 package com.work.mapper;
 
 import com.work.pojo.*;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,39 +11,39 @@ import java.util.List;
 public interface ChatMapper {
 
     /**
-     * æŸ¥æ‰¾ä¸¤ä¸ªç”¨æˆ·æ˜¯å¦ç¬¬ä¸€æ¬¡èŠå¤©
+     * ²éÕÒÁ½¸öÓÃ»§ÊÇ·ñµÚÒ»´ÎÁÄÌì
      *
-     * @param fromUser å‘é€è€…
-     * @param toUser   æ¥æ”¶è€…
-     * @return å¦‚æœæ˜¯ è¿”å›linkId
+     * @param fromUser ·¢ËÍÕß
+     * @param toUser   ½ÓÊÕÕß
+     * @return Èç¹ûÊÇ ·µ»ØlinkId
      */
     String selectAssociation(@Param("fromUser") String fromUser, @Param("toUser") String toUser);
 
     /**
-     * æ·»åŠ ä¸¤ç”¨æˆ·ä¹‹é—´çš„å…³è”ï¼ˆç¬¬ä¸€æ¬¡èŠå¤©ï¼‰
+     * Ìí¼ÓÁ½ÓÃ»§Ö®¼äµÄ¹ØÁª£¨µÚÒ»´ÎÁÄÌì£©
      *
-     * @param chatLink å…³è”å¯¹è±¡
+     * @param chatLink ¹ØÁª¶ÔÏó
      * @return
      */
     void addAssociation(ChatLink chatLink);
 
     /**
-     * æ·»åŠ ä¸¤æ¡èŠå¤©åˆ—è¡¨è®°å½• ä¸¤æ¡è®°å½•åŒ…æ‹¬ï¼šå‘é€è€…ã€æ¥æ”¶è€…ï¼ˆç¬¬ä¸€æ¬¡èŠå¤©ï¼‰
+     * Ìí¼ÓÁ½ÌõÁÄÌìÁĞ±í¼ÇÂ¼ Á½Ìõ¼ÇÂ¼°üÀ¨£º·¢ËÍÕß¡¢½ÓÊÕÕß£¨µÚÒ»´ÎÁÄÌì£©
      *
      * @param chatLists
      */
     void addChatListRecords(@Param("chatLists") ArrayList<ChatList> chatLists);
 
     /**
-     * æ ¹æ®å‘é€è€…ï¼ˆç”¨æˆ·åï¼‰æŸ¥è¯¢è‡ªå·±çš„èŠå¤©åˆ—è¡¨
+     * ¸ù¾İ·¢ËÍÕß£¨ÓÃ»§Ãû£©²éÑ¯×Ô¼ºµÄÁÄÌìÁĞ±í
      *
-     * @param fromUser å‘é€è€…
+     * @param fromUser ·¢ËÍÕß
      * @return
      */
     List<ChatListData> selectChatLists(String fromUser);
 
     /**
-     * æ ¹æ®linkIdæŸ¥è¯¢ä¸¤è€…ä¹‹é—´çš„èŠå¤©è®°å½•
+     * ¸ù¾İlinkId²éÑ¯Á½ÕßÖ®¼äµÄÁÄÌì¼ÇÂ¼
      *
      * @param linkId
      * @param startIndex
@@ -56,7 +54,7 @@ public interface ChatMapper {
 
 
     /**
-     * è·å–æŒ‡å®šlinkIdçš„èŠå¤©ä¿¡æ¯æ€»æ•°
+     * »ñÈ¡Ö¸¶¨linkIdµÄÁÄÌìĞÅÏ¢×ÜÊı
      *
      * @param linkId
      * @return
@@ -64,7 +62,7 @@ public interface ChatMapper {
     int selectChatMessagesTotalNumber(String linkId);
 
     /**
-     * æ·»åŠ èŠå¤©ä¿¡æ¯è®°å½•
+     * Ìí¼ÓÁÄÌìĞÅÏ¢¼ÇÂ¼
      *
      * @param message
      */
@@ -73,7 +71,7 @@ public interface ChatMapper {
 
 
     /**
-     * æŸ¥è¯¢èŠå¤©åŒæ–¹æ˜¯å¦åœ¨åŒä¸€çª—å£
+     * ²éÑ¯ÁÄÌìË«·½ÊÇ·ñÔÚÍ¬Ò»´°¿Ú
      *
      * @param linkId
      * @param fromUser
@@ -83,7 +81,7 @@ public interface ChatMapper {
     int selectIsSaveWindows(@Param("linkId") String linkId, @Param("fromUser") String fromUser, @Param("toUser") String toUser);
 
     /**
-     * æ›´æ–°æ˜¯å¦åœ¨åŒä¸€çª—å£çš„å€¼
+     * ¸üĞÂÊÇ·ñÔÚÍ¬Ò»´°¿ÚµÄÖµ
      *
      * @param linkId
      * @param fromUser
@@ -91,7 +89,7 @@ public interface ChatMapper {
     void updateIsSaveWindows(@Param("linkId") String linkId, @Param("fromUser") String fromUser);
 
     /**
-     * æ›´æ–°é™¤äº†linkIdçš„æ•°æ®çš„çª—å£å€¼ -1
+     * ¸üĞÂ³ıÁËlinkIdµÄÊı¾İµÄ´°¿ÚÖµ -1
      *
      * @param linkId
      * @param fromUser
@@ -100,7 +98,7 @@ public interface ChatMapper {
 
 
     /**
-     * æ›´æ–°æœªè¯»æ•°
+     * ¸üĞÂÎ´¶ÁÊı
      *
      * @param fromUser
      * @param toUser
@@ -111,7 +109,7 @@ public interface ChatMapper {
 
 
     /**
-     * æ¸…ç©ºæœªè¯»æ•°
+     * Çå¿ÕÎ´¶ÁÊı
      *
      * @param fromUser
      * @param toUser
@@ -120,14 +118,14 @@ public interface ChatMapper {
     void clearUnread(@Param("fromUser") String fromUser, @Param("toUser") String toUser, @Param("linkId") String linkId);
 
     /**
-     * æ›´æ–°ä¿¡æ¯çš„çŠ¶æ€
+     * ¸üĞÂĞÅÏ¢µÄ×´Ì¬
      *
      * @param linkId
      */
     void updateMessageStatus(String linkId);
 
     /**
-     * è·å–ç”¨æˆ·çš„æ‰€æœ‰æœªè¯»æ•°
+     * »ñÈ¡ÓÃ»§µÄËùÓĞÎ´¶ÁÊı
      *
      * @param username
      * @return
@@ -135,7 +133,7 @@ public interface ChatMapper {
     int selectUnreadTotalNumber(String username);
 
     /**
-     * å°†çª—å£å€¼é‡ç½®ä¸º0
+     * ½«´°¿ÚÖµÖØÖÃÎª0
      *
      * @param username
      */

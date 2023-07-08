@@ -31,23 +31,23 @@ public class ChatServiceImpl implements ChatService {
     @Transactional(rollbackFor = Exception.class)
     public boolean isFirstChat(String fromUser, String toUser) {
 
-        //åˆ¤æ–­ä¸¤è€…æ˜¯å¦ç¬¬ä¸€æ¬¡èŠå¤©,è¿”å›ä¸¤è€…çš„linkId
+        //ÅĞ¶ÏÁ½ÕßÊÇ·ñµÚÒ»´ÎÁÄÌì,·µ»ØÁ½ÕßµÄlinkId
         String linkId = chatMapper.selectAssociation(fromUser, toUser);
 
         if (linkId == null) {
 
             String newLinkId = UUID.randomUUID().toString();
-            //æ·»åŠ ä¸¤è€…çš„å…³ç³»è¡¨æ•°æ®
+            //Ìí¼ÓÁ½ÕßµÄ¹ØÏµ±íÊı¾İ
             ChatLink chatLink = new ChatLink(newLinkId, fromUser, toUser, new Date());
-            //è¿”å›æ’å…¥æ•°æ®çš„idä¸»é”®
+            //·µ»Ø²åÈëÊı¾İµÄidÖ÷¼ü
             chatMapper.addAssociation(chatLink);
 
-            //æŸ¥è¯¢ç”¨æˆ·å¤´åƒ
+            //²éÑ¯ÓÃ»§Í·Ïñ
             String fromUserPicture = userMapper.selectAvatarByUsername(fromUser);
             String toUserPicture = userMapper.selectAvatarByUsername(toUser);
 
 
-            //æ·»åŠ ä¸¤æ¡èŠå¤©åˆ—è¡¨æ•°æ®ï¼ˆå‘é€æ–¹ï¼Œæ¥æ”¶æ–¹ï¼‰
+            //Ìí¼ÓÁ½ÌõÁÄÌìÁĞ±íÊı¾İ£¨·¢ËÍ·½£¬½ÓÊÕ·½£©
             ChatList fromUserList = new ChatList(newLinkId, fromUser, toUser, toUserPicture, false, false, 0);
             ChatList toUserList = new ChatList(newLinkId, toUser, fromUser, fromUserPicture, false, false, 0);
 
@@ -57,7 +57,7 @@ public class ChatServiceImpl implements ChatService {
 
             chatMapper.addChatListRecords(chatLists);
 
-            //æ’å…¥ä¸€æ¡ç©ºç™½æ¶ˆæ¯ï¼ˆä¸ºäº†æ›´å¥½åœ°è”è¡¨æŸ¥è¯¢æ•°æ®ï¼‰
+            //²åÈëÒ»Ìõ¿Õ°×ÏûÏ¢£¨ÎªÁË¸üºÃµØÁª±í²éÑ¯Êı¾İ£©
             ChatMessage chatMessage = new ChatMessage(newLinkId, fromUser, toUser, "", new Date(), true);
             chatMapper.addChatMessage(chatMessage);
 
@@ -76,22 +76,22 @@ public class ChatServiceImpl implements ChatService {
         String fromUser = chatMessage.getFromUser();
         String toUser = chatMessage.getToUser();
 
-        //å°†ä¸€æ¡çš„ä¿¡æ¯çš„çŠ¶æ€ï¼ˆæœ€åä¸€æ¡ï¼‰æ”¹ä¸ºå¦
+        //½«Ò»ÌõµÄĞÅÏ¢µÄ×´Ì¬£¨×îºóÒ»Ìõ£©¸ÄÎª·ñ
         chatMapper.updateMessageStatus(linkId);
 
-        //åˆ¤æ–­èŠå¤©åŒæ–¹æ˜¯å¦åœ¨åŒä¸€çª—å£èŠå¤©
+        //ÅĞ¶ÏÁÄÌìË«·½ÊÇ·ñÔÚÍ¬Ò»´°¿ÚÁÄÌì
         int flag = chatMapper.selectIsSaveWindows(linkId, fromUser, toUser);
 
-        // 1--åªæœ‰ä¸€æ–¹åœ¨çª—å£ä¸­ æœªè¯»æ•°åŠ ç»™æ¥æ”¶æ–¹ï¼Œ2--ä¸¤è€…éƒ½åœ¨çª—å£ä¸­ æ¸…é™¤æœªè¯»æ•°
+        // 1--Ö»ÓĞÒ»·½ÔÚ´°¿ÚÖĞ Î´¶ÁÊı¼Ó¸ø½ÓÊÕ·½£¬2--Á½Õß¶¼ÔÚ´°¿ÚÖĞ Çå³ıÎ´¶ÁÊı
         if (flag == 1) {
-            //æ›´æ–°æœªè¯»æ•°,
+            //¸üĞÂÎ´¶ÁÊı
             chatMapper.updateUnread(fromUser, toUser, 1, linkId);
         } else if (flag == 2) {
-            //æ¸…ç©ºæ‰€æœ‰çš„æœªè¯»æ•°
+            //Çå¿ÕËùÓĞµÄÎ´¶ÁÊı
             chatMapper.clearUnread(fromUser, toUser, linkId);
         }
 
-        //ä¿å­˜èŠå¤©è®°å½•
+        //±£´æÁÄÌì¼ÇÂ¼
         chatMapper.addChatMessage(chatMessage);
 
 
@@ -100,29 +100,29 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ResultInfo getFromUserChatList(String fromUser) {
 
-        //æŸ¥è¯¢è·å–ç”¨æˆ·çš„èŠå¤©åˆ—è¡¨
+        //²éÑ¯»ñÈ¡ÓÃ»§µÄÁÄÌìÁĞ±í
         List<ChatListData> chatListData = chatMapper.selectChatLists(fromUser);
 
-        return ResultInfo.successInfo("èŠå¤©åˆ—è¡¨", chatListData);
+        return ResultInfo.successInfo("ÁÄÌìÁĞ±í", chatListData);
     }
 
     @Override
     public ResultInfo getRecentChatRecords(String fromUser, String toUser, int startIndex, int pageSize) {
 
-        //è·å–ä¸¤è€…ä¹‹é—´çš„å…³è”id
+        //»ñÈ¡Á½ÕßÖ®¼äµÄ¹ØÁªid
         String linkId = chatMapper.selectAssociation(fromUser, toUser);
         System.out.println(fromUser + "    " + toUser);
         System.out.println(linkId);
-        //æŸ¥è¯¢æœ€è¿‘çš„å…­æ¡èŠå¤©ä¿¡æ¯ï¼ˆåŒ…æ‹¬æœªè¯»ï¼‰
+        //²éÑ¯×î½üµÄÁùÌõÁÄÌìĞÅÏ¢£¨°üÀ¨Î´¶Á£©
         List<ChatMessageData> chatMessageData = chatMapper.selectChatMessages(linkId, startIndex, pageSize);
 
-        //åè½¬list
+        //·´×ªlist
         Collections.reverse(chatMessageData);
 
-        //æ¸…ç©ºæœªè¯»ä¿¡æ¯
+        //Çå¿ÕÎ´¶ÁĞÅÏ¢
         chatMapper.clearUnread(fromUser, toUser, linkId);
 
-        return ResultInfo.successInfo("æœ€è¿‘çš„å…­æ¡èŠå¤©è®°å½•", chatMessageData);
+        return ResultInfo.successInfo("×î½üµÄÁùÌõÁÄÌì¼ÇÂ¼", chatMessageData);
     }
 
     @Override
@@ -132,44 +132,42 @@ public class ChatServiceImpl implements ChatService {
 
         int pageNumber = (MessagesTotalNumber % MESSAGE_SIZE == 0) ? (MessagesTotalNumber / MESSAGE_SIZE) : (MessagesTotalNumber / MESSAGE_SIZE) + 1;
 
-        return ResultInfo.successInfo("æ€»é¡µæ•°", pageNumber);
+        return ResultInfo.successInfo("×ÜÒ³Êı", pageNumber);
     }
 
     @Override
     public void updateWindows(String fromUser, String toUser) {
 
-        //è·å–ä¸¤è€…ä¹‹é—´çš„å…³è”id
+        //»ñÈ¡Á½ÕßÖ®¼äµÄ¹ØÁªid
         String linkId = chatMapper.selectAssociation(fromUser, toUser);
 
-        //æ›´æ–°ç‚¹å‡»äº†èŠå¤©æ¡†çš„åŒä¸€çª—å£å€¼
+        //¸üĞÂµã»÷ÁËÁÄÌì¿òµÄÍ¬Ò»´°¿ÚÖµ
         chatMapper.updateIsSaveWindows(linkId, fromUser);
 
-        //æ¸…é™¤å½“å‰fromUserçš„æœªè¯»æ•°
+        //Çå³ıµ±Ç°fromUserµÄÎ´¶ÁÊı
         chatMapper.clearUnread(fromUser, toUser, linkId);
 
-        //æ›´æ–°å…¶ä»–çª—å£çš„å€¼
+        //¸üĞÂÆäËû´°¿ÚµÄÖµ
         chatMapper.updateOtherWindows(linkId, fromUser);
     }
 
     @Override
     public ResultInfo getUnreadTotalNumber(String username) {
 
-        //æŸ¥è¯¢ç”¨æˆ·çš„æ‰€æœ‰çš„æœªè¯»æ•°
+        //²éÑ¯ÓÃ»§µÄËùÓĞµÄÎ´¶ÁÊı
         Integer unreadTotalNumber = chatMapper.selectUnreadTotalNumber(username);
 
         if (unreadTotalNumber != null) {
-            return ResultInfo.successInfo("æ€»æœªè¯»æ•°", unreadTotalNumber);
+            return ResultInfo.successInfo("×ÜÎ´¶ÁÊı", unreadTotalNumber);
         } else {
-            return ResultInfo.successInfo("æ€»æœªè¯»æ•°", 0);
+            return ResultInfo.successInfo("×ÜÎ´¶ÁÊı", 0);
         }
     }
 
     @Override
     public void resetWindows(String username) {
 
-        //é€€å‡ºwebsocketè¿æ¥æ—¶ï¼Œé‡ç½®çª—å£å€¼
+        //ÍË³öwebsocketÁ¬½ÓÊ±£¬ÖØÖÃ´°¿ÚÖµ
         chatMapper.resetWindows(username);
     }
-
-
 }

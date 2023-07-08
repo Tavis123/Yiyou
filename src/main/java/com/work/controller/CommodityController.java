@@ -1,5 +1,6 @@
 package com.work.controller;
 
+import com.work.mapper.UserMapper;
 import com.work.pojo.Commodity;
 import com.work.pojo.User;
 import com.work.service.CommodityService;
@@ -25,6 +26,8 @@ public class CommodityController {
     UserService userService;
     @Autowired
     DetailPictureService detailPictureService;
+    @Autowired
+    UserMapper userMapper;
 
     @PostMapping("/addCommodity")
     public Map<String, Object> addCommodity(@RequestParam(value = "file", required = false) MultipartFile file, Commodity commodity) throws IOException {
@@ -39,12 +42,13 @@ public class CommodityController {
         Date day = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         commodity.setPublishTime(sdf.format(day));
-        User user = userService.selectUserById(commodity.getPublisherId());
+        //查询商品的发布者
+        User user = userMapper.selectByUsername(commodity.getPublisherId());
         System.out.println(user);
         String commodityId = commodity.getPublisherId() + "#" + user.getCommodityNum();
         commodity.setCommodityId(commodityId);
         commodity.setCommentAreaId(commodity.getCommodityId() + "$" + user.getCommodityNum());
-        userService.updateNum(user.getCommodityNum() + 1, String.valueOf(user.getId()));
+        userMapper.updateNum(user.getCommodityNum() + 1, String.valueOf(user.getUsername()));
         commodity.setMainPicture(image1);
         commodity.setTotalSales(0);
         commodity.setNowCommentNum(0);

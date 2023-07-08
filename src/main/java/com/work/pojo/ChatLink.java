@@ -4,16 +4,16 @@ import java.util.Date;
 
 public class ChatLink {
 
-    //å…³ç³»è¡¨id
+    //¹ØÏµ±íid
     private String linkId;
 
-    //å‘é€è€…
+    //·¢ËÍÕß
     private String fromUser;
 
-    //æ¥æ”¶è€…
+    //½ÓÊÕÕß
     private String toUser;
 
-    //åˆ›å»ºæ—¶é—´
+    //´´½¨Ê±¼ä
     private Date createTime;
 
     public ChatLink(String linkId, String fromUser, String toUser, Date createTime) {

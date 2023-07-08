@@ -4,18 +4,18 @@ package com.work.pojo;
 public class ResultInfo {
 
     /**
-     * æ“ä½œçš„çŠ¶æ€ç ï¼š
-     * æˆåŠŸä¸º1ï¼Œå¤±è´¥ä¸º0ï¼ŒæˆåŠŸä½†è­¦å‘Šä¸º3
+     * ²Ù×÷µÄ×´Ì¬Âë£º
+     * ³É¹¦Îª1£¬Ê§°ÜÎª0£¬³É¹¦µ«¾¯¸æÎª3
      */
     private Integer status;
 
     /**
-     * è¿”å›çš„ç»“æœé›†
+     * ·µ»ØµÄ½á¹û¼¯
      */
     private Object data;
 
     /**
-     * è¿”å›çš„ç›¸å…³ä¿¡æ¯
+     * ·µ»ØµÄÏà¹ØĞÅÏ¢
      */
     private String message;
 

@@ -29,75 +29,75 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @SuppressWarnings("all")
 public class WebSocketController {
 
-    //ç”¨æ¥å­˜æ”¾æ¯ä¸ªå®¢æˆ·ç«¯å¯¹åº”çš„WebSocketControllerå¯¹è±¡ã€‚
+    //ÓÃÀ´´æ·ÅÃ¿¸ö¿Í»§¶Ë¶ÔÓ¦µÄWebSocketController¶ÔÏó¡£
     private static CopyOnWriteArraySet<WebSocketController> webSocketSet = new CopyOnWriteArraySet<WebSocketController>();
-    //ç”¨æ¥è®°å½•usernameå’Œè¯¥sessionè¿›è¡Œç»‘å®š
+    //ÓÃÀ´¼ÇÂ¼usernameºÍ¸Ãsession½øĞĞ°ó¶¨
     private static Map<String, Session> map = new HashMap<String, Session>();
-    //ä¸æŸä¸ªå®¢æˆ·ç«¯çš„è¿æ¥ä¼šè¯ï¼Œéœ€è¦é€šè¿‡å®ƒæ¥ç»™å®¢æˆ·ç«¯å‘é€æ•°æ®
+    //ÓëÄ³¸ö¿Í»§¶ËµÄÁ¬½Ó»á»°£¬ĞèÒªÍ¨¹ıËüÀ´¸ø¿Í»§¶Ë·¢ËÍÊı¾İ
     private Session session;
-    //ç”¨æˆ·å
+    //ÓÃ»§Ãû
     private String username;
-    //è·å–å…¨å±€å®¹å™¨
+    //»ñÈ¡È«¾ÖÈİÆ÷
     private ApplicationContext applicationContext;
-    //èŠå¤©é€»è¾‘å±‚service
+    //ÁÄÌìÂß¼­²ãservice
     private ChatService chatService;
-    //èŠå¤©æ•°æ®å±‚mapper
+    //ÁÄÌìÊı¾İ²ãmapper
     private ChatMapper chatMapper;
 
 
     /**
-     * è¿æ¥å»ºç«‹æˆåŠŸè°ƒç”¨çš„æ–¹æ³•ï¼Œåˆå§‹åŒ–æ˜µç§°ã€session
+     * Á¬½Ó½¨Á¢³É¹¦µ÷ÓÃµÄ·½·¨£¬³õÊ¼»¯êÇ³Æ¡¢session
      */
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
 
-        //è·å–ç™»å½•æ—¶å­˜æ”¾httpSessionçš„ç”¨æˆ·æ•°æ®
+        //»ñÈ¡µÇÂ¼Ê±´æ·ÅhttpSessionµÄÓÃ»§Êı¾İ
         HttpSession httpSession= (HttpSession) config.getUserProperties().get(HttpSession.class.getName());
         WebApplicationContext applicationContext = WebApplicationContextUtils.getRequiredWebApplicationContext(httpSession.getServletContext());
 
         User user = (User) httpSession.getAttribute("user");
 
-        //åˆå§‹åŒ–æ•°æ®
+        //³õÊ¼»¯Êı¾İ
         this.applicationContext = applicationContext;
         this.session = session;
         this.username = user.getUsername();
         this.chatService = (ChatService) applicationContext.getBean("chatService");
         this.chatMapper = (ChatMapper) applicationContext.getBean("chatMapper");
 
-        //ç»‘å®šusernameä¸session
+        //°ó¶¨usernameÓësession
         map.put(username, session);
 
-        //åŠ å…¥setä¸­
+        //¼ÓÈësetÖĞ
         webSocketSet.add(this);
 
     }
 
     /**
-     * è¿æ¥å…³é—­è°ƒç”¨çš„æ–¹æ³•
+     * Á¬½Ó¹Ø±Õµ÷ÓÃµÄ·½·¨
      */
     @OnClose
     public void onClose() {
 
-        //å°†å½“å‰çš„sessionåˆ é™¤
+        //½«µ±Ç°µÄsessionÉ¾³ı
         webSocketSet.remove(this);
     }
 
     /**
-     * æ”¶åˆ°å®¢æˆ·ç«¯æ¶ˆæ¯åè°ƒç”¨çš„æ–¹æ³•
+     * ÊÕµ½¿Í»§¶ËÏûÏ¢ºóµ÷ÓÃµÄ·½·¨
      *
-     * @param message å®¢æˆ·ç«¯å‘é€è¿‡æ¥çš„æ¶ˆæ¯
+     * @param message ¿Í»§¶Ë·¢ËÍ¹ıÀ´µÄÏûÏ¢
      */
     @OnMessage
     public void onMessage(String message) {
 
-        //ä»å®¢æˆ·ç«¯ä¼ è¿‡æ¥çš„æ•°æ®æ˜¯jsonæ•°æ®ï¼Œæ‰€ä»¥è¿™é‡Œä½¿ç”¨jacksonè¿›è¡Œè½¬æ¢ä¸ºchatMsgå¯¹è±¡ï¼Œ
+        //´Ó¿Í»§¶Ë´«¹ıÀ´µÄÊı¾İÊÇjsonÊı¾İ£¬ËùÒÔÕâÀïÊ¹ÓÃjackson½øĞĞ×ª»»ÎªchatMsg¶ÔÏó£¬
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessage chatMsg;
 
         try {
             chatMsg = objectMapper.readValue(message, ChatMessage.class);
 
-            //å¯¹chatMsgè¿›è¡Œè£…ç®±
+            //¶ÔchatMsg½øĞĞ×°Ïä
             chatMsg.setFromUser(username);
             chatMsg.setSendTime(new Date());
             chatMsg.setLatest(true);
@@ -106,7 +106,7 @@ public class WebSocketController {
             Session toSession = map.get(chatMsg.getToUser());
 
 
-            //å£°æ˜ä¸€ä¸ªmapï¼Œå°è£…ç›´æ¥å‘é€ä¿¡æ¯æ•°æ®è¿”å›å‰ç«¯
+            //ÉùÃ÷Ò»¸ömap£¬·â×°Ö±½Ó·¢ËÍĞÅÏ¢Êı¾İ·µ»ØÇ°¶Ë
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("sendUser", username);
             resultMap.put("content", chatMsg.getContent());
@@ -114,19 +114,19 @@ public class WebSocketController {
 
             JSONObject json = new JSONObject(resultMap);
 
-            //å‘é€ç»™æ¥æ”¶è€….
+            //·¢ËÍ¸ø½ÓÊÕÕß.
             fromSession.getAsyncRemote().sendText(json.toString());
 
-            // 1.åˆ¤æ–­æ¥æ”¶æ–¹çš„toSessionæ˜¯å¦ä¸ºnull
-            // 2.åˆ¤æ–­åœ¨èŠå¤©é¡µé¢ ==> ç›´æ¥å‘é€ å…¶ä»–éƒ½æ˜¯å­˜å‚¨åœ¨æ•°æ®åº“ä¸­
+            // 1.ÅĞ¶Ï½ÓÊÕ·½µÄtoSessionÊÇ·ñÎªnull
+            // 2.ÅĞ¶ÏÔÚÁÄÌìÒ³Ãæ ==> Ö±½Ó·¢ËÍ ÆäËû¶¼ÊÇ´æ´¢ÔÚÊı¾İ¿âÖĞ
             int flag = chatMapper.selectIsSaveWindows(chatMsg.getLinkId(), chatMsg.getFromUser(), chatMsg.getToUser());
 
             if (toSession != null && toSession.isOpen()) {
-                //å‘é€ç»™å‘é€è€….
+                //·¢ËÍ¸ø·¢ËÍÕß.
                 toSession.getAsyncRemote().sendText(json.toString());
             }
 
-            //ä¿å­˜èŠå¤©è®°å½•ä¿¡æ¯
+            //±£´æÁÄÌì¼ÇÂ¼ĞÅÏ¢
             chatService.saveMessage(chatMsg);
 
         } catch (JsonParseException e) {
@@ -141,7 +141,7 @@ public class WebSocketController {
 
 
     /**
-     * å‘ç”Ÿé”™è¯¯æ—¶è°ƒç”¨
+     * ·¢Éú´íÎóÊ±µ÷ÓÃ
      */
     @OnError
     public void onError(Session session, Throwable error) {
@@ -149,11 +149,11 @@ public class WebSocketController {
     }
 
     /**
-     * ç¾¤å‘è‡ªå®šä¹‰æ¶ˆæ¯
+     * Èº·¢×Ô¶¨ÒåÏûÏ¢
      */
     public void broadcast(String message) {
         for (WebSocketController item : webSocketSet) {
-            //å¼‚æ­¥å‘é€æ¶ˆæ¯.
+            //Òì²½·¢ËÍÏûÏ¢.
             item.session.getAsyncRemote().sendText(message);
         }
     }

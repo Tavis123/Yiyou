@@ -3,13 +3,13 @@ package com.work.pojo;
 
 public class ChatMessageData {
 
-    //å‘é€è€…
+    //·¢ËÍÕß
     private String sendUser;
 
-    //ä¿¡æ¯å†…å®¹
+    //ĞÅÏ¢ÄÚÈİ
     private String content;
 
-    //å‘é€æ—¶é—´
+    //·¢ËÍÊ±¼ä
     private String sendTime;
 
 
