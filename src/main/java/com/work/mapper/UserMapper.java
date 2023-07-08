@@ -23,8 +23,8 @@ public interface UserMapper extends BaseMapper<User> {
     int updateNum(int commodity_num, String username);
 
     //改变某个账号的余额
-    @Update("update user set money = #{money} where userId = #{userId}")
-    int updateMoney(double money, String userId);
+    @Update("update user set money = #{money} where username = #{username}")
+    int updateMoney(double money, String username);
 
     //根据用户名查询对应的头像
     @Select("select avatar from user where username = #{username};")

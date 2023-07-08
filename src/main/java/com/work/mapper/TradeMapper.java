@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface TradeMapper extends BaseMapper<Trade> {
-    @Insert("insert into trade(customerId, businessManId, commodityIdName,totalMoney,realMoney,serviceCharge,tradeNum,tradeId,orderTime,freight) values (#{customerId}, #{businessManId}, #{commodityIdName}, #{totalMoney}, #{realMoney}, #{serviceCharge}, #{tradeNum}, #{tradeId}, #{orderTime}, #{freight})")
+    @Insert("insert into trade(customerId, businessManId, commodityIdName, totalMoney, realMoney, serviceCharge, tradeNum, commodityId, tradeId, orderTime,freight) value (#{customerId},#{businessManId}, #{commodityIdName}, #{totalMoney},#{realMoney}, #{serviceCharge}, #{tradeNum}, #{commodityId}, #{tradeId}, #{orderTime},#{freight})")
     int addTrade(Trade trade);
 
     @Update("update trade set tradeStatus = #{tradeStatus} where tradeId = #{tradeId}")

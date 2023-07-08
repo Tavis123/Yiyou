@@ -1,5 +1,6 @@
 package com.work.controller;
 
+import com.work.mapper.UserMapper;
 import com.work.pojo.Commodity;
 import com.work.pojo.Trade;
 import com.work.pojo.User;
@@ -24,12 +25,14 @@ public class TradeController {
     UserService userService;
     @Autowired
     TradeService tradeService;
+    @Autowired
+    UserMapper userMapper;
 
     @PostMapping("/addTrade")
     public Map<String, String> addTrade(Trade trade) {
         Map<String, String> map = new HashMap<>();
-        User customer = userService.selectUserById(trade.getCustomerId());
-        User businessMan = userService.selectUserById(trade.getBusinessManId());
+        User customer = userMapper.selectByUsername(trade.getCustomerId());
+        User businessMan = userMapper.selectByUsername(trade.getBusinessManId());
         System.out.println(trade.getCommodityId());
         Commodity commodity = commodityService.selectOneByCommodityId(trade.getCommodityId());
         System.out.println("asda123123");
@@ -64,8 +67,8 @@ public class TradeController {
     public Map<String, String> payment(String tradeId) {
         Map<String, String> map = new HashMap<>();
         Trade trade = tradeService.selectTradeByTradeId(tradeId);
-        User customer = userService.selectUserById(trade.getCustomerId());
-        User businessMan = userService.selectUserById(trade.getBusinessManId());
+        User customer = userMapper.selectByUsername(trade.getCustomerId());
+        User businessMan = userMapper.selectByUsername(trade.getBusinessManId());
         Commodity commodity = commodityService.selectOneByCommodityId(trade.getCommodityId());
         System.out.println(customer.getMoney() - trade.getTotalMoney());
         if (customer.getMoney() - trade.getTotalMoney() < 0) {
@@ -85,7 +88,7 @@ public class TradeController {
     public Map<String, String> confirmReceipt(String tradeId) {
         Trade trade = tradeService.selectTradeByTradeId(tradeId);
         tradeService.updateTradeStatus(2, tradeId);
-        User businessManId = userService.selectUserById(trade.getBusinessManId());
+        User businessManId = userMapper.selectByUsername(trade.getBusinessManId());
         userService.updateMoney(trade.getRealMoney() + trade.getFreight(), String.valueOf(businessManId.getId()));
         Map<String, String> map = new HashMap<>();
         map.put("msg", "收货成功！");
